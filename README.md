@@ -72,17 +72,17 @@ This system replaces the deprecated `clasp` tool with a custom Node.js solution 
 🚀 Google Apps Script CLI - Demo
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
-│  $ make clone myproject                                    │
+│  $ make clone myproject                                     │
 │  ✅ Project cloned successfully                            │
 │                                                             │
-│  $ make pull myproject                                     │
-│  📥 Downloaded latest changes from GAS                    │
+│  $ make pull myproject                                      │
+│  📥 Downloaded latest changes from GAS                     │
 │                                                             │
-│  $ make push myproject                                     │
-│  📤 Uploaded changes to Google Apps Script                │
+│  $ make push myproject                                      │
+│  📤 Uploaded changes to Google Apps Script                 │
 │                                                             │
-│  $ make update                                             │
-│  🔄 Checking for system updates...                        │
+│  $ make update                                              │
+│  🔄 Checking for system updates...                         │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
