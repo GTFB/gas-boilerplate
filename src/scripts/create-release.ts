@@ -63,9 +63,9 @@ export class ReleaseCreator {
       
       // 11. Verify push was successful
       console.log('✅ Verifying push was successful...');
-      const pushStatus = execSync('git status --porcelain', { encoding: 'utf8' }).trim();
-      if (pushStatus) {
-        throw new Error(`Push verification failed. Uncommitted changes found: ${pushStatus}`);
+      const remoteStatus = execSync('git status -uno', { encoding: 'utf8' });
+      if (remoteStatus.includes('Your branch is behind') || remoteStatus.includes('Your branch is ahead')) {
+        throw new Error('Push verification failed. Branch is not in sync with remote.');
       }
       
       console.log(`🎉 Release v${newVersion} created successfully!`);

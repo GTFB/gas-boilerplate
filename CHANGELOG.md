@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.1] - 2025-08-14
+
+### 🐛 Patch Release
+- Automated release v1.3.1
+- All tests passed
+- Configuration validated
+
+### Changed
+- Version bumped to 1.3.1
+
+---
+
+
+
 ## [1.3.0] - 2025-08-14
 
 ### ✨ Minor Release
