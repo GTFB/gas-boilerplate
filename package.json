@@ -1,0 +1,37 @@
+{
+  "name": "gas-boilerplate",
+  "version": "1.0.0",
+  "description": "Google Apps Script CLI boilerplate for project management",
+  "main": "clasp-clone.js",
+  "scripts": {
+    "start": "node clasp-clone.js",
+    "validate": "node utils/config-validator.js",
+    "extract": "node functions/extract-files.js",
+    "test": "node test-system.js",
+    "update": "node utils/version-updater.js",
+    "logs": "node -e \"console.log('Use: make logs or check logs/ folder')\""
+  },
+  "keywords": [
+    "google-apps-script",
+    "cli",
+    "gas",
+    "boilerplate",
+    "automation"
+  ],
+  "author": "System Administrator",
+  "license": "MIT",
+  "dependencies": {
+    "googleapis": "^156.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/gas-boilerplate.git"
+  },
+  "homepage": "https://github.com/yourusername/gas-boilerplate#readme",
+  "bugs": {
+    "url": "https://github.com/yourusername/gas-boilerplate/issues"
+  }
+}

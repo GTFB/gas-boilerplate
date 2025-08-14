@@ -1,0 +1,6 @@
+{
+  "defaultProject": "myproject",
+  "projectsPath": "../",
+  "systemPath": "./",
+  "logsPath": "./logs/"
+}

@@ -1,0 +1,22 @@
+{
+  "myproject": {
+    "id": "SCRIPT_ID_HERE",
+    "title": "My Project",
+    "description": "Project description"
+  },
+  "analytics": {
+    "id": "",
+    "title": "Analytics",
+    "description": "Analytics system"
+  },
+  "orders": {
+    "id": "",
+    "title": "Orders", 
+    "description": "Order management system"
+  },
+  "dashboard": {
+    "id": "",
+    "title": "Dashboard",
+    "description": "Dashboard application"
+  }
+}
