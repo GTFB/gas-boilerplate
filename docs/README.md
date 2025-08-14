@@ -42,9 +42,11 @@ Welcome to the technical documentation of the Google Apps Script CLI system. Her
 
 ### 1. Setup
 ```cmd
-cd system
-setup.bat
-set GOOGLE_APPLICATION_CREDENTIALS=C:\path\to\system\key.json
+# Установить зависимости
+npm install
+
+# Настроить переменную окружения
+set GOOGLE_APPLICATION_CREDENTIALS=C:\path\to\key.json
 ```
 
 ### 2. Verification
@@ -55,10 +57,10 @@ make projects
 
 ### 3. Basic Commands
 ```cmd
-make clone [project]     # Clone project
-make pull [project]      # Download changes
-make push [project]      # Upload changes
-make ff [project]        # Extract data
+make clone PROJECT=name     # Clone project
+make pull PROJECT=name      # Download changes
+make push PROJECT=name      # Upload changes
+make files PROJECT=name     # Extract data
 ```
 
 ## 🔧 Configuration
@@ -96,7 +98,7 @@ project-name/
 ### Adding New Functions
 1. Create file in `functions/`
 2. Export in `functions/index.js`
-3. Add command in `commands.bat`
+3. Add command in `Makefile`
 4. Update documentation
 
 ### Adding New Commands

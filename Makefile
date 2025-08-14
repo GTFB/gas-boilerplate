@@ -1,0 +1,239 @@
+# Makefile for gas-boilerplate project
+# Works on Windows with Chocolatey make
+# Unified interface for all commands
+
+.PHONY: help release patch minor major preview setup-repos test-repos clone pull push status list projects files validate logs config update upgrade new
+
+# Default target
+help:
+	@echo "Available commands:"
+	@echo ""
+	@echo "Release commands:"
+	@echo "  make release     - create patch release"
+	@echo "  make patch       - create patch release"
+	@echo "  make minor       - create minor release"
+	@echo "  make major       - create major release"
+	@echo "  make preview     - create preview release"
+	@echo ""
+	@echo "Repository commands:"
+	@echo "  make setup-repos [url] - setup upstream/origin repositories"
+	@echo "  make test-repos        - test repository connections"
+	@echo ""
+	@echo "Project management commands:"
+	@echo "  make clone PROJECT=name     - clone project"
+	@echo "  make pull PROJECT=name      - download changes"
+	@echo "  make push PROJECT=name      - upload changes"
+	@echo "  make status PROJECT=name    - show status"
+	@echo "  make files PROJECT=name     - extract files from files.html"
+	@echo "  make new PROJECT=name       - create new project (with templates)"
+	@echo "  make list                   - list projects"
+	@echo "  make projects               - show all configured projects"
+	@echo ""
+	@echo "System commands:"
+	@echo "  make update              - check for updates from gas-boilerplate"
+	@echo "  make upgrade             - update from gas-boilerplate"
+	@echo "  make validate            - validate configuration"
+	@echo "  make logs                - show recent logs"
+	@echo "  make config              - show configuration"
+	@echo ""
+	@echo "Examples:"
+	@echo "  make clone PROJECT=myproject"
+	@echo "  make pull PROJECT=analytics"
+	@echo "  make release"
+	@echo "  make setup-repos https://github.com/username/ayva.git"
+
+# Release commands
+release: patch
+
+patch:
+	@echo "Creating patch release..."
+	@echo "🔄 Auto-committing and pushing changes..."
+	@git add .
+	@git commit -m "feat: patch release - $(shell date +%Y-%m-%d_%H-%M-%S)"
+	@git push origin main
+	@echo "✅ Patch release committed and pushed!"
+	@echo "📦 Creating release package..."
+	ts-node src/scripts/create-release.ts patch
+
+minor:
+	@echo "Creating minor release..."
+	@echo "🔄 Auto-committing and pushing changes..."
+	@git add .
+	@git commit -m "feat: minor release - $(shell date +%Y-%m-%d_%H-%M-%S)"
+	@git push origin main
+	@echo "✅ Minor release committed and pushed!"
+	@echo "📦 Creating release package..."
+	ts-node src/scripts/create-release.ts minor
+
+major:
+	@echo "Creating major release..."
+	@echo "🔄 Auto-committing and pushing changes..."
+	@git add .
+	@git commit -m "feat: major release - $(shell date +%Y-%m-%d_%H-%M-%S)"
+	@git push origin main
+	@echo "✅ Major release committed and pushed!"
+	@echo "📦 Creating release package..."
+	ts-node src/scripts/create-release.ts major
+
+preview:
+	@echo "Creating preview release..."
+	@echo "🔄 Auto-committing and pushing changes..."
+	@git add .
+	@git commit -m "feat: preview release - $(shell date +%Y-%m-%d_%H-%M-%S)"
+	@git push origin main
+	@echo "✅ Preview release committed and pushed!"
+	@echo "📦 Creating release package..."
+	ts-node src/scripts/create-release.ts preview
+
+# Repository setup commands
+setup-repos:
+	@echo "Setting up repositories..."
+	ts-node src/scripts/setup-repos.ts setup
+
+test-repos:
+	@echo "Testing repository connections..."
+	ts-node src/scripts/setup-repos.ts test
+
+# Project management commands
+clone:
+	@if [ "$(PROJECT)" = "" ]; then \
+		echo "ERROR: Specify project name: make clone PROJECT=name"; \
+		echo "Example: make clone PROJECT=myproject"; \
+		exit 1; \
+	fi
+	@echo "Cloning project: $(PROJECT)"
+	@if [ -d "../$(PROJECT)" ]; then \
+		echo "ERROR: Project $(PROJECT) already exists!"; \
+		exit 1; \
+	fi
+	@echo "Creating project structure and adding to configuration..."
+	ts-node src/clasp-clone.ts clone $(PROJECT)
+
+pull:
+	@if [ "$(PROJECT)" = "" ]; then \
+		echo "ERROR: Specify project name: make pull PROJECT=name"; \
+		echo "Example: make pull PROJECT=myproject"; \
+		exit 1; \
+	fi
+	@echo "Downloading changes for project: $(PROJECT)"
+	ts-node src/clasp-clone.ts pull $(PROJECT)
+
+push:
+	@if [ "$(PROJECT)" = "" ]; then \
+		echo "ERROR: Specify project name: make push PROJECT=name"; \
+		echo "Example: make push PROJECT=myproject"; \
+		exit 1; \
+	fi
+	@echo "Uploading changes for project: $(PROJECT)"
+	ts-node src/clasp-clone.ts push $(PROJECT)
+
+status:
+	@if [ "$(PROJECT)" = "" ]; then \
+		echo "ERROR: Specify project name: make status PROJECT=name"; \
+		echo "Example: make status PROJECT=myproject"; \
+		exit 1; \
+	fi
+	@echo "Project status for: $(PROJECT)"
+	ts-node src/clasp-clone.ts list $(PROJECT)
+
+files:
+	@if [ "$(PROJECT)" = "" ]; then \
+		echo "ERROR: Specify project name: make files PROJECT=name"; \
+		echo "Example: make files PROJECT=myproject"; \
+		exit 1; \
+	fi
+	@echo "Extracting files from project: $(PROJECT)"
+	ts-node src/functions/extract-files.ts $(PROJECT)
+
+new:
+	@if [ "$(PROJECT)" = "" ]; then \
+		echo "ERROR: Specify project name: make new PROJECT=name"; \
+		echo "Example: make new PROJECT=analytics"; \
+		exit 1; \
+	fi
+	@echo "Creating new project: $(PROJECT)"
+	@if [ -d "../$(PROJECT)" ]; then \
+		echo "ERROR: Project $(PROJECT) already exists!"; \
+		exit 1; \
+	fi
+	@echo "Creating folder structure..."
+	@mkdir -p "../$(PROJECT)/system" "../$(PROJECT)/files"
+	@echo "Copying service account..."
+	@if [ -f "key.json" ]; then \
+		cp "key.json" "../$(PROJECT)/system/"; \
+		echo "✅ Service account copied"; \
+	else \
+		echo "⚠️  key.json not found (copy manually if needed)"; \
+	fi
+	@echo "Copying project templates..."
+	@if [ -f "templates/appsscript.json" ]; then \
+		cp "templates/appsscript.json" "../$(PROJECT)/system/"; \
+		echo "✅ Project template copied"; \
+	else \
+		echo "⚠️  appsscript.json template not found (copy manually if needed)"; \
+	fi
+	@echo "SUCCESS: Project $(PROJECT) created!"
+	@echo ""
+	@echo "Project structure:"
+	@echo "  ../$(PROJECT)/"
+	@echo "  ├── system/          - system files"
+	@echo "  └── files/           - project files"
+	@echo ""
+	@echo "Next steps:"
+	@echo "  1. cd ../$(PROJECT)"
+	@echo "  2. cd ../system"
+	@echo "  3. make clone PROJECT=$(PROJECT)  - clone project"
+	@echo "  4. cd ../$(PROJECT)"
+	@echo "  5. cd ../system"
+	@echo "  6. make pull PROJECT=$(PROJECT)   - download files"
+	@echo "  7. Edit code"
+	@echo "  8. make push PROJECT=$(PROJECT)   - upload changes"
+	@echo ""
+	@echo "Use commands from system folder:"
+	@echo "  make help            - show all commands"
+	@echo "  make clone PROJECT=name   - clone"
+	@echo "  make pull PROJECT=name    - download"
+	@echo "  make push PROJECT=name    - upload"
+	@echo "  make status PROJECT=name  - status"
+	@echo "  make projects        - project list"
+
+list:
+	@echo "Project list:"
+	@for dir in ../*/; do \
+		if [ "$$dir" != "../system/" ]; then \
+			echo "  $$(basename "$$dir")"; \
+		fi; \
+	done
+	@echo ""
+	@echo "To clone: make clone PROJECT=name"
+
+projects:
+	@echo "Showing all configured projects:"
+	ts-node src/clasp-clone.ts projects
+
+# System commands
+update:
+	@echo "Checking for updates from gas-boilerplate..."
+	ts-node src/utils/version-updater.ts check
+
+upgrade:
+	@echo "Updating system..."
+	ts-node src/utils/version-updater.ts update
+
+validate:
+	@echo "Validating system configuration..."
+	ts-node src/utils/config-validator.ts
+
+logs:
+	@echo "Showing recent logs..."
+	@if [ -f "logs/$$(date +%Y-%m-%d).md" ]; then \
+		cat "logs/$$(date +%Y-%m-%d).md"; \
+	else \
+		echo "No logs found for today"; \
+	fi
+
+config:
+	@echo "System configuration:"
+	@node -e "const fs = require('fs'); const config = JSON.parse(fs.readFileSync('config.json', 'utf8')); console.log('Default project:', config.defaultProject); console.log('Projects path:', config.projectsPath); console.log('System path:', config.systemPath); console.log('Logs path:', config.logsPath);"
+
+

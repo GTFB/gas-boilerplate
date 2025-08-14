@@ -4,41 +4,41 @@
 
 ### Project Commands
 
-#### `make clone [project]`
+#### `make clone PROJECT=name`
 Clones an existing Google Apps Script project.
 ```cmd
-make clone myproject      # Clone myproject
-make clone analytics      # Clone analytics project
+make clone PROJECT=myproject      # Clone myproject
+make clone PROJECT=analytics      # Clone analytics project
 ```
 
-#### `make pull [project]`
+#### `make pull PROJECT=name`
 Downloads changes from Google Apps Script.
 ```cmd
-make pull myproject       # Download changes from myproject
-make pull analytics       # Download changes from analytics
+make pull PROJECT=myproject       # Download changes from myproject
+make pull PROJECT=analytics       # Download changes from analytics
 ```
 
-#### `make push [project]`
+#### `make push PROJECT=name`
 Uploads changes to Google Apps Script.
 ```cmd
-make push myproject       # Upload changes to myproject
-make push analytics       # Upload changes to analytics
+make push PROJECT=myproject       # Upload changes to myproject
+make push PROJECT=analytics       # Upload changes to analytics
 ```
 
-#### `make status [project]`
+#### `make status PROJECT=name`
 Shows the status of a Google Apps Script project.
 ```cmd
-make status myproject     # Show status of myproject
-make status analytics     # Show status of analytics
+make status PROJECT=myproject     # Show status of myproject
+make status PROJECT=analytics     # Show status of analytics
 ```
 
 ### Utility Commands
 
-#### `make extract [project]`
+#### `make files PROJECT=name`
 Extracts data from `index.html` file to `files/` folder.
 ```cmd
-make extract myproject    # Extract data from myproject/index.html
-make extract analytics    # Extract data from analytics/index.html
+make files PROJECT=myproject    # Extract data from myproject/index.html
+make files PROJECT=analytics    # Extract data from analytics/index.html
 ```
 
 **Result:**
@@ -77,11 +77,11 @@ Shows list of project folders.
 make list             # Show all projects
 ```
 
-#### `make new [name]`
+#### `make new PROJECT=name`
 Creates new project structure.
 ```cmd
-make new analytics    # Create analytics project
-make new orders       # Create orders project
+make new PROJECT=analytics    # Create analytics project
+make new PROJECT=orders       # Create orders project
 ```
 
 #### `make projects`

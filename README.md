@@ -52,6 +52,7 @@
 - 🏗️ **Repository Setup** - Automatic upstream/origin configuration for fork workflow
 - 📁 **Project Management** - Create, clone, and manage multiple Apps Script projects
 - 🛠️ **Smart Automation** - Automatic project structure creation and configuration
+- 🚀 **Auto-Releases** - One-command releases with automatic git commit and push
 - 🔐 **Service Account Auth** - Secure authentication using Google Cloud service accounts
 - 📊 **File Extraction** - Extract data from HTML files with JSON parsing
 - 📝 **Comprehensive Logging** - Track all operations with detailed logs
@@ -76,17 +77,18 @@ This system replaces the deprecated `clasp` tool with a custom Node.js solution 
 │  $ make setup-repos https://github.com/username/ayva.git   │
 │  ✅ Repository setup completed!                            │
 │                                                             │
-│  $ make clone myproject                                     │
+│  $ make clone PROJECT=myproject                            │
 │  ✅ Project cloned successfully                            │
 │                                                             │
-│  $ make pull myproject                                      │
+│  $ make pull PROJECT=myproject                             │
 │  📥 Downloaded latest changes from GAS                     │
 │                                                             │
-│  $ make push myproject                                      │
+│  $ make push PROJECT=myproject                             │
 │  📤 Uploaded changes to Google Apps Script                 │
 │                                                             │
-│  $ make update                                              │
-│  🔄 Checking for system updates...                         │
+│  $ make release                                             │
+│  🔄 Auto-committing and pushing changes...                 │
+│  ✅ Release committed and pushed!                          │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -94,10 +96,12 @@ This system replaces the deprecated `clasp` tool with a custom Node.js solution 
 </div>
 
 ### ✨ **Key Features at a Glance**
-- 🚀 **Git-style Commands** - `clone`, `pull`, `push`, `status`
+- 🚀 **Git-style Commands** - `clone PROJECT=name`, `pull PROJECT=name`, `push PROJECT=name`
 - 🔄 **Automatic Updates** - Keep system up-to-date
 - 🏗️ **Repository Setup** - `setup-repos`, `test-repos` for fork workflow
 - 📁 **Smart Project Management** - Multiple projects, one interface
+- 🚀 **Auto-Releases** - `make release` automatically commits and pushes
+- 🆕 **Project Creation** - `make new PROJECT=name` with templates
 - 🛠️ **TypeScript Powered** - Modern, type-safe development
 - 🔐 **Secure Authentication** - Service account integration
 - 📊 **File Extraction** - HTML to JSON data processing
@@ -107,6 +111,9 @@ This system replaces the deprecated `clasp` tool with a custom Node.js solution 
 ---
 
 ## 🚀 Quick Start
+
+### 📋 Пошаговое руководство
+Смотрите [QUICK_START.md](QUICK_START.md) для детальных инструкций по порядку действий.
 
 ### Prerequisites
 - Node.js 18+ installed
@@ -148,38 +155,28 @@ make upgrade             # Apply updates
 - Open [Google Apps Script Settings](https://script.google.com/home/usersettings)
 - Enable "Google Apps Script API"
 
-### Step 2: Copy to Second Computer
+### Step 2: Структура проекта
 ```
-gas-cli/
-├── system/                         ← REQUIRED!
+ayva/                               ← Ваша папка проекта
+├── system/                         ← gas-boilerplate (система)
 │   ├── key.json                    ← service account key
-│   ├── clasp-clone.js              ← main script
-│   ├── commands.bat                ← make commands
-│   ├── make.bat                    ← project creation
-│   ├── setup.bat                   ← quick setup
-│   ├── functions/                  ← shared functions
-│   │   ├── extract-files.js        ← file extraction
-│   │   └── index.js                ← functions index
+│   ├── Makefile                    ← все команды
+│   ├── src/                        ← исходный код
+│   │   ├── clasp-clone.ts          ← main script
+│   │   ├── functions/              ← shared functions
+│   │   ├── utils/                  ← utility functions
+│   │   └── scripts/                ← scripts
 │   ├── templates/                  ← project templates
 │   │   └── appsscript.json         ← GAS config template
-│   ├── utils/                      ← utility functions
-│   │   ├── config-validator.js     ← config validation
-│   │   ├── logger.js               ← enhanced logging
-│   │   └── version-updater.js      ← version update system
 │   ├── logs/                       ← change tracking
 │   ├── docs/                       ← detailed documentation
-│   ├── .gitignore                  ← Git exclusions
 │   ├── package.json                ← dependencies
 │   ├── config.json                 ← general configuration
 │   ├── projects.json               ← project IDs and details
-│   ├── CHANGELOG.md                ← version history
-│   ├── LICENSE                     ← MIT license
-│   ├── GIT_README.md               ← Git workflow guide
 │   └── README.md                   ← this guide
 └── myproject/                      ← myproject
-    ├── Code.js                     ← main code
-    ├── files.html                  ← HTML interface
-    └── files/                      ← extracted files
+    ├── system/                     ← system files
+    └── files/                      ← project files
 ```
 
 ### Step 3: Install Node.js
@@ -189,7 +186,7 @@ gas-cli/
 ### Step 4: Quick Setup
 ```cmd
 cd system
-setup.bat
+npm install
 ```
 
 ### Step 5: Set Environment Variable
