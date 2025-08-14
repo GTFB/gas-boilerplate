@@ -9,13 +9,14 @@ if "%1"=="status" goto status
 if "%1"=="list" goto list
 if "%1"=="new" goto new
 if "%1"=="projects" goto projects
-if "%1"=="ff" goto ff
+if "%1"=="files" goto files
 if "%1"=="validate" goto validate
 if "%1"=="logs" goto logs
 if "%1"=="config" goto config
 if "%1"=="update" goto update
 if "%1"=="upgrade" goto upgrade
 if "%1"=="test" goto test
+if "%1"=="release" goto release
 if "%1"=="help" goto help
 
 :help
@@ -28,7 +29,7 @@ echo   make push [project]      - upload changes
 echo   make status [project]    - show status
 echo.
 echo Utility commands:
-echo   make ff [project]        - extract files from ff.html
+echo   make files [project]      - extract files from files.html
 echo   make validate            - validate configuration
 echo   make logs                - show recent logs
 echo   make config              - show configuration
@@ -40,6 +41,9 @@ echo.
 echo Testing commands:
 echo   make test                - test system components
 echo.
+echo Release commands:
+echo   make release [type]      - create release (patch/minor/major/preview)
+echo.
 echo Admin commands:
 echo   make list                - list projects
 echo   make new [name]          - create new project
@@ -50,9 +54,10 @@ echo Examples:
 echo   make clone myproject     - clone myproject
 echo   make pull myproject      - download changes in myproject
 echo   make push analytics      - upload changes in analytics project
-echo   make ff myproject        - extract files from myproject/ff.html
+echo   make files myproject      - extract files from myproject/files.html
 echo   make validate            - validate system configuration
 echo   make test                - test system components
+echo   make release [type]      - create release
 echo   make update              - check for updates
 echo   make upgrade             - update system
 goto end
@@ -69,7 +74,7 @@ if exist "..\%2" (
   goto end
 )
 echo Creating project structure and adding to configuration...
-node clasp-clone.js clone %2
+ts-node src\clasp-clone.ts clone %2
 goto end
 
 :pull
@@ -79,7 +84,7 @@ if "%2"=="" (
   goto end
 )
 echo Downloading changes for project: %2
-node clasp-clone.js pull %2
+ts-node src\clasp-clone.ts pull %2
 goto end
 
 :push
@@ -89,7 +94,7 @@ if "%2"=="" (
   goto end
 )
 echo Uploading changes for project: %2
-node clasp-clone.js push %2
+ts-node src\clasp-clone.ts push %2
 goto end
 
 :status
@@ -99,7 +104,7 @@ if "%2"=="" (
   goto end
 )
 echo Project status for: %2
-node clasp-clone.js list %2
+ts-node src\clasp-clone.ts list %2
 goto end
 
 :list
@@ -115,22 +120,22 @@ goto end
 
 :projects
 echo Showing all configured projects:
-node clasp-clone.js projects
+ts-node src\clasp-clone.ts projects
 goto end
 
-:ff
+:files
 if "%2"=="" (
-  echo ERROR: Specify project name: make ff [name]
-  echo Example: make ff myproject
+  echo ERROR: Specify project name: make files [name]
+  echo Example: make files myproject
   goto end
 )
 echo Extracting files from project: %2
-node functions\extract-files.js %2
+ts-node src\functions\extract-files.ts %2
 goto end
 
 :validate
 echo Validating system configuration:
-node utils\config-validator.js
+ts-node src\utils\config-validator.ts
 goto end
 
 :logs
@@ -156,17 +161,27 @@ goto end
 
 :update
 echo Checking for updates from gas-boilerplate...
-node utils\version-updater.js check
+ts-node src\utils\version-updater.ts check
 goto end
 
 :upgrade
 echo Updating from gas-boilerplate...
-node utils\version-updater.js update
+ts-node src\utils\version-updater.ts update
 goto end
 
 :test
 echo Testing system components...
-node test-system.js
+ts-node src\test-system.ts
+goto end
+
+:release
+if "%2"=="" (
+  echo Creating patch release...
+  ts-node src\scripts\create-release.ts patch
+) else (
+  echo Creating %2 release...
+  ts-node src\scripts\create-release.ts %2
+)
 goto end
 
 :new

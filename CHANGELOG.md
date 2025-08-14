@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-01-XX
+
+### Changed
+- **BREAKING**: Migrated entire codebase to TypeScript
+- **BREAKING**: Restructured project layout with `src/` directory
+- **BREAKING**: Renamed `ff.html` to `files.html` for clarity
+- **BREAKING**: Updated `make ff` command to `make files`
+
+### Added
+- TypeScript support with `tsconfig.json`
+- Type definitions in `src/types/index.ts`
+- Enhanced test system with TypeScript validation
+- GitHub templates for issues and pull requests
+- Comprehensive contributing guidelines (`CONTRIBUTING.md`)
+- Git workflow documentation (`docs/git-workflow.md`)
+- Updated AI assistant rules for TypeScript
+- Build system with npm scripts
+
+### Improved
+- Project structure and organization
+- Code quality with static typing
+- Documentation and examples
+- Development workflow and guidelines
+- Error handling and validation
+- Test coverage and validation
+
+### Removed
+- Legacy JavaScript files
+- Duplicate documentation files (`GIT_README.md`)
+- Outdated project structure references
+
 ## [1.1.0] - 2025-08-14
 
 ### Added
@@ -35,7 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Admin commands: list, new, projects, help
 - Service account authentication
 - Automatic project structure creation
-- HTML data extraction from ff.html files
+- HTML data extraction from index.html files
 - Multi-level logging system
 - Configuration validation
 - Project templates

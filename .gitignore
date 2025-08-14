@@ -29,6 +29,12 @@ logs/*.md
 .DS_Store
 Thumbs.db
 
+# Build output
+dist/
+*.js.map
+*.d.ts.map
+*.tsbuildinfo
+
 # Temporary files
 *.tmp
 *.temp

@@ -2,14 +2,26 @@
   "name": "gas-boilerplate",
   "version": "1.0.0",
   "description": "Google Apps Script CLI boilerplate for project management",
-  "main": "clasp-clone.js",
+  "main": "dist/clasp-clone.js",
+  "bin": {
+    "gas-cli": "dist/clasp-clone.js"
+  },
   "scripts": {
-    "start": "node clasp-clone.js",
-    "validate": "node utils/config-validator.js",
-    "extract": "node functions/extract-files.js",
-    "test": "node test-system.js",
-    "update": "node utils/version-updater.js",
-    "logs": "node -e \"console.log('Use: make logs or check logs/ folder')\""
+    "start": "node dist/clasp-clone.js",
+    "dev": "ts-node src/clasp-clone.ts",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "validate": "ts-node src/utils/config-validator.ts",
+    "extract": "ts-node src/functions/extract-files.ts",
+    "test": "ts-node src/test-system.ts",
+    "update": "ts-node src/utils/version-updater.ts",
+    "logs": "node -e \"console.log('Use: make logs or check logs/ folder')\"",
+    "release:patch": "npm run build && npm version patch && git push && git push --tags",
+    "release:minor": "npm run build && npm version minor && git push && git push --tags",
+    "release:major": "npm run build && npm version major && git push && git push --tags",
+    "release:preview": "npm run build && npm version prerelease --preid=beta && git push && git push --tags",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean"
   },
   "keywords": [
     "google-apps-script",
@@ -23,8 +35,15 @@
   "dependencies": {
     "googleapis": "^156.0.0"
   },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/google-apps-script": "^1.0.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0",
+    "rimraf": "^5.0.0"
+  },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "repository": {
     "type": "git",

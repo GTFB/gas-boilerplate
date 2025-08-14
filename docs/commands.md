@@ -34,11 +34,11 @@ make status analytics     # Show status of analytics
 
 ### Utility Commands
 
-#### `make ff [project]`
-Extracts data from `ff.html` file to `files/` folder.
+#### `make extract [project]`
+Extracts data from `index.html` file to `files/` folder.
 ```cmd
-make ff myproject         # Extract data from myproject/ff.html
-make ff analytics         # Extract data from analytics/ff.html
+make extract myproject    # Extract data from myproject/index.html
+make extract analytics    # Extract data from analytics/index.html
 ```
 
 **Result:**
@@ -156,5 +156,5 @@ make help
 - All commands are executed from `system/` folder
 - For project commands, project name must be specified
 - `pull` and `push` commands require configured Google Apps Script ID
-- `ff` command requires `ff.html` file in project
+- `extract` command requires `index.html` file in project
 - Logs are automatically saved in `logs/` folder

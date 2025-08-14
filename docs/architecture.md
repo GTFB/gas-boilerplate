@@ -7,7 +7,7 @@ The Google Apps Script CLI system represents a modular architecture built on pri
 ## 📁 File Structure
 
 ```
-ayva/
+gas-cli/
 ├── system/                      ← Central management system
 │   ├── functions/              ← Processing functions
 │   │   ├── extract-files.js    ← File extraction utility
@@ -125,7 +125,7 @@ ayva/
 ### File Extraction (ff)
 ```
 1. User → commands.bat → extract-files.js
-2. extract-files.js → read ff.html
+2. extract-files.js → read index.html
 3. HTML parsing (h2 + p with JSON)
 4. Create CSV, JSON files
 5. Save to files/ folder

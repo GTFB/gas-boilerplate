@@ -73,7 +73,7 @@ make ff [project]        # Extract data
 project-name/
 ├── system/                     # System files
 ├── Code.js                     # Main GAS code
-├── ff.html                     # HTML for extraction
+├── index.html                  # HTML for extraction
 └── files/                      # Extracted files
 ```
 

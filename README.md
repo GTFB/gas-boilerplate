@@ -22,6 +22,21 @@ This system replaces the deprecated `clasp` tool with a custom Node.js solution 
 - Automatically updates from a central boilerplate repository
 - Provides a consistent workflow across different computers
 
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+ installed
+- Google Apps Script API enabled
+- Service account key file (`key.json`)
+
+### Installation
+```bash
+git clone <your-repo>
+cd gas-boilerplate
+npm install
+npm run build
+```
+
 ## ⚡ Super Quick Workflow
 
 **Complete project workflow in 8 commands:**
@@ -51,7 +66,7 @@ make upgrade             # Apply updates
 
 ### Step 2: Copy to Second Computer
 ```
-ayva/
+gas-cli/
 ├── system/                         ← REQUIRED!
 │   ├── key.json                    ← service account key
 │   ├── clasp-clone.js              ← main script
@@ -79,7 +94,7 @@ ayva/
 │   └── README.md                   ← this guide
 └── myproject/                      ← myproject
     ├── Code.js                     ← main code
-    ├── ff.html                     ← HTML interface
+    ├── files.html                  ← HTML interface
     └── files/                      ← extracted files
 ```
 
@@ -117,7 +132,7 @@ make status [project]    # show status (like git status)
 
 ### Utility Commands
 ```cmd
-make ff [project]        # extract files from ff.html
+make files [project]      # extract files from files.html
 make validate            # validate configuration
 make logs                # show recent logs
 make config              # show configuration
@@ -127,6 +142,12 @@ make config              # show configuration
 ```cmd
 make update              # check for updates from gas-boilerplate
 make upgrade             # update from gas-boilerplate
+```
+
+### Release Commands
+```cmd
+make release             # create patch release
+make release [type]      # create release (patch/minor/major/preview)
 ```
 
 ### Admin Commands
@@ -154,8 +175,8 @@ make status myproject
 # Create new project
 make new analytics
 
-# Extract files from ff.html
-make ff myproject
+# Extract files from files.html
+make files myproject
 
 # Validate system
 make validate
@@ -190,6 +211,42 @@ The system includes a smart version updater that:
 - ✅ **Dependency Management** - Installs new dependencies
 - ✅ **Validation** - Tests system after update
 - ✅ **Conflict Resolution** - Handles merge conflicts automatically
+
+## 🚀 Release Automation
+
+### Automated Releases
+The system includes comprehensive release automation:
+
+- ✅ **GitHub Actions** - Automatic releases on tag push
+- ✅ **Version Management** - Semantic versioning (patch/minor/major)
+- ✅ **Changelog Updates** - Automatic CHANGELOG.md updates
+- ✅ **Quality Gates** - Tests and validation before release
+- ✅ **Multiple Commands** - Release via make, npm, or direct script
+
+### Quick Release Commands
+```cmd
+# Via make commands
+make release              # Patch release (1.0.0 → 1.0.1)
+make release minor        # Minor release (1.0.0 → 1.1.0)
+make release major        # Major release (1.0.0 → 2.0.0)
+make release preview      # Preview release (1.0.0 → 1.0.1-beta.1)
+
+# Via npm scripts
+npm run release:patch     # Patch release
+npm run release:minor     # Minor release
+npm run release:major     # Major release
+npm run release:preview   # Preview release
+
+# Direct script
+node scripts/create-release.js patch
+```
+
+### Release Workflow
+1. **Prepare** - Ensure clean working directory
+2. **Test** - Run `make test` and `make validate`
+3. **Release** - Use `make release [type]`
+4. **Automate** - GitHub Actions creates release automatically
+5. **Verify** - Check GitHub Releases page
 
 ### Update Workflow
 ```cmd
@@ -226,7 +283,7 @@ npm run update
   - `appsscript.json` - Google Apps Script config
   - `node_modules/` - installed Node.js packages
 - `Code.js` - main script code
-- `ff.html` - HTML interface
+- `files.html` - HTML interface
 - `files/` - extracted and processed files
 
 ## 🔍 Troubleshooting
@@ -258,7 +315,7 @@ The system has modular documentation for different aspects:
 - **[🚀 Setup](docs/setup.md)** - step-by-step installation guide
 - **[🏗️ Architecture](docs/architecture.md)** - technical system description
 - **[🔍 Troubleshooting](docs/troubleshooting.md)** - problem solving
-- **[🔄 Git Workflow](GIT_README.md)** - Git integration and version updates
+- **[🔄 Git Workflow](docs/git-workflow.md)** - Git integration and version updates
 - **[🤖 AI Assistant Rules](CURSOR_RULES.md)** - rules for AI assistants (Cursor)
 
 For technical details see `docs/README.md`
@@ -274,8 +331,41 @@ For technical details see `docs/README.md`
 - Check updates: `make update`
 - See docs: `docs/README.md`
 - View changes: `CHANGELOG.md`
-- Git workflow: `GIT_README.md`
+- Git workflow: `docs/git-workflow.md`
 - AI assistant rules: `CURSOR_RULES.md`
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+
+### Development Setup
+```bash
+git clone <your-fork>
+cd gas-boilerplate
+npm install
+npm run build
+npm test
+```
+
+### Making Changes
+1. Create a feature branch: `git checkout -b feature/amazing-feature`
+2. Make your changes
+3. Test: `npm test`
+4. Build: `npm run build`
+5. Commit: `git commit -m "Add amazing feature"`
+6. Push: `git push origin feature/amazing-feature`
+7. Create a Pull Request
+
+### Code Style
+- Follow TypeScript best practices
+- Use meaningful commit messages
+- Update documentation for new features
+- Add tests for new functionality
+
+### Reporting Issues
+- Use the [Issue Template](.github/ISSUE_TEMPLATE.md)
+- Include steps to reproduce
+- Specify your environment details
 
 ## 📄 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -287,7 +377,7 @@ This system is designed to work with Git repositories:
 - **Live Projects** - Clone and customize for your needs
 - **Automatic Updates** - Keep projects up to date with `make upgrade`
 
-See [GIT_README.md](GIT_README.md) for detailed Git workflow instructions.
+See [docs/git-workflow.md](docs/git-workflow.md) for detailed Git workflow instructions.
 
 ## 🤖 AI Assistant Rules (Cursor)
 

@@ -23,9 +23,9 @@
 
 ### Step 3: Copy System to Second Computer
 
-Copy entire `ayva/` folder to second computer. Structure should be:
+Copy entire `gas-cli/` folder to second computer. Structure should be:
 ```
-ayva/
+gas-cli/
 ├── system/                           ← REQUIRED!
 │   ├── key.json                    ← service account key
 │   ├── clasp-clone.js             ← main script
@@ -44,7 +44,7 @@ ayva/
 │   └── README.md                   ← this guide
 └── myproject/                      ← myproject
     ├── Code.js                     ← main code
-    ├── ff.html                     ← HTML interface
+    ├── index.html                  ← HTML interface
     └── files/                      ← extracted files
 ```
 
@@ -173,7 +173,7 @@ project-name/
 │   ├── key.json               # Service account key
 │   └── node_modules/          # Node.js dependencies
 ├── Code.js                     # Main GAS code
-├── ff.html                     # HTML file for extraction
+├── index.html                  # HTML file for extraction
 └── files/                      # Extracted and processed files
 ```
 

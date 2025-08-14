@@ -15,50 +15,55 @@ This document defines the architectural rules and development patterns that AI a
 ## 📁 Directory Structure Rules
 
 ```
-system/
-├── functions/              ← Node.js processing functions
-│   ├── extract-files.js    ← HTML/JSON extraction utility
-│   └── index.js            ← Functions export (REQUIRED!)
+gas-boilerplate/
+├── src/                    ← TypeScript source code
+│   ├── functions/          ← Processing functions
+│   │   ├── extract-files.ts ← HTML/JSON extraction utility
+│   │   └── index.ts        ← Functions export (REQUIRED!)
+│   ├── utils/              ← Utility functions
+│   │   ├── config-validator.ts ← Configuration validation
+│   │   ├── logger.ts       ← Enhanced logging system
+│   │   └── version-updater.ts ← Version update system
+│   ├── scripts/            ← Build and deployment scripts
+│   ├── types/              ← TypeScript type definitions
+│   │   └── index.ts        ← Centralized types
+│   └── clasp-clone.ts      ← Main GAS script (pull/push/status)
 ├── templates/              ← Project templates
 │   └── appsscript.json     ← GAS configuration template
-├── utils/                  ← Utility functions
-│   ├── config-validator.js ← Configuration validation
-│   ├── logger.js           ← Enhanced logging system
-│   └── version-updater.js  ← Version update system
-├── logs/                   ← Daily log files
 ├── docs/                   ← Detailed documentation
-├── clasp-clone.js          ← Main GAS script (pull/push/status)
+├── logs/                   ← Daily log files
 ├── commands.bat            ← Make commands wrapper
 ├── make.bat                ← Project creation script
 ├── setup.bat               ← Quick setup script
 ├── config.json             ← System configuration
 ├── projects.json           ← Project definitions
-├── key.json                ← Service account key
 ├── package.json            ← Dependencies
+├── tsconfig.json           ← TypeScript configuration
 └── README.md               ← Main guide
 ```
 
 ## 🔧 Development Rules
 
-### 1. Function System (`functions/`)
+### 1. Function System (`src/functions/`)
 - **Rule**: One function per file
-- **Export**: Must export via `functions/index.js`
-- **Pattern**: Each function should be self-contained
+- **Export**: Must export via `src/functions/index.ts`
+- **Pattern**: Each function should be self-contained with proper types
 - **Example**:
-```javascript
-// functions/my-function.js
-const { logger } = require('../utils/logger');
+```typescript
+// src/functions/my-function.ts
+import { logger } from '../utils/logger';
 
-function myFunction(param) {
-  logger.info('MY_FUNCTION', `Processing: ${param}`);
+interface MyFunctionParams {
+  param: string;
+}
+
+export function myFunction(params: MyFunctionParams): void {
+  logger.info('MY_FUNCTION', `Processing: ${params.param}`);
   // function logic here
 }
 
-module.exports = { myFunction };
-
-// functions/index.js
-const { myFunction } = require('./my-function');
-module.exports = { myFunction };
+// src/functions/index.ts
+export { myFunction } from './my-function';
 ```
 
 ### 2. Command System (`commands.bat`)
@@ -98,6 +103,30 @@ logger.info('PULL', `Project: ${project.name}, ID: ${project.id}`);
 - **Rule**: Templates go in `templates/` folder
 - **Pattern**: Minimal, working configurations
 - **Usage**: Copied to new projects automatically
+
+### 6. TypeScript Rules (`src/`)
+- **Rule**: All source code must be TypeScript
+- **Types**: Define interfaces in `src/types/index.ts`
+- **Imports**: Use ES6 import/export syntax
+- **Compilation**: Build with `npm run build`
+- **Development**: Use `ts-node` for direct execution
+- **Example**:
+```typescript
+// src/types/index.ts
+export interface Project {
+  name: string;
+  id?: string;
+  title: string;
+  description?: string;
+}
+
+// src/functions/my-function.ts
+import { Project } from '../types';
+
+export function processProject(project: Project): void {
+  // Type-safe code here
+}
+```
 
 ## 🚫 What NOT to Do
 
