@@ -1,6 +1,6 @@
 {
   "name": "gas-boilerplate",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Google Apps Script CLI boilerplate for project management",
   "main": "dist/clasp-clone.js",
   "bin": {
