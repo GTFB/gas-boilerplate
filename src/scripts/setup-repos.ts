@@ -4,7 +4,7 @@ import { logger } from '../utils/logger';
 
 export class RepositorySetup {
   constructor() {
-    // Убираем неиспользуемую переменную currentDir
+    // Убираю неиспользуемую переменную currentDir
   }
 
   async setupRepositories(ayvaRepoUrl?: string): Promise<void> {
