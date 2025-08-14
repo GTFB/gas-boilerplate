@@ -3,7 +3,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
-import * as readline from 'readline';
 import { logger } from '../utils/logger';
 import { ReleaseType, PackageJson } from '../types';
 
@@ -41,7 +40,7 @@ export class ReleaseCreator {
       
       // 6. Create Git commit
       console.log('📝 Creating Git commit...');
-      const commitMessage = await this.getCommitMessage(newVersion);
+      const commitMessage = `chore: bump version to ${newVersion}`;
       execSync('git add .', { stdio: 'pipe' });
       execSync(`git commit -m "${commitMessage}" --no-verify`, { stdio: 'pipe' });
       
@@ -211,22 +210,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     }
   }
 
-  private async getCommitMessage(newVersion: string): Promise<string> {
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
 
-    const systemMessage = `chore: bump version to ${newVersion}`;
-    
-    return new Promise((resolve) => {
-      rl.question(`Enter commit message (or press Enter for: "${systemMessage}"): `, (answer) => {
-        rl.close();
-        const message = answer.trim() || systemMessage;
-        resolve(message);
-      });
-    });
-  }
 
   // Method to get release summary
   getReleaseSummary(): { currentVersion: string; nextVersions: Record<ReleaseType, string> } {
