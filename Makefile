@@ -53,7 +53,7 @@ patch:
 	@git push origin main
 	@echo "✅ Patch release committed and pushed!"
 	@echo "📦 Creating release package..."
-	ts-node src/scripts/create-release.ts patch
+	npx ts-node src/scripts/create-release.ts patch
 
 minor:
 	@echo "Creating minor release..."
@@ -63,7 +63,7 @@ minor:
 	@git push origin main
 	@echo "✅ Minor release committed and pushed!"
 	@echo "📦 Creating release package..."
-	ts-node src/scripts/create-release.ts minor
+	npx ts-node src/scripts/create-release.ts minor
 
 major:
 	@echo "Creating major release..."
@@ -73,7 +73,7 @@ major:
 	@git push origin main
 	@echo "✅ Major release committed and pushed!"
 	@echo "📦 Creating release package..."
-	ts-node src/scripts/create-release.ts major
+	npx ts-node src/scripts/create-release.ts major
 
 preview:
 	@echo "Creating preview release..."
@@ -83,16 +83,16 @@ preview:
 	@git push origin main
 	@echo "✅ Preview release committed and pushed!"
 	@echo "📦 Creating release package..."
-	ts-node src/scripts/create-release.ts preview
+	npx ts-node src/scripts/create-release.ts preview
 
 # Repository setup commands
 setup-repos:
 	@echo "Setting up repositories..."
-	ts-node src/scripts/setup-repos.ts setup
+	npx ts-node src/scripts/setup-repos.ts setup
 
 test-repos:
 	@echo "Testing repository connections..."
-	ts-node src/scripts/setup-repos.ts test
+	npx ts-node src/scripts/setup-repos.ts test
 
 # Project management commands
 clone:
@@ -107,7 +107,7 @@ clone:
 		exit 1; \
 	fi
 	@echo "Creating project structure and adding to configuration..."
-	ts-node src/clasp-clone.ts clone $(PROJECT)
+	npx ts-node src/clasp-clone.ts clone $(PROJECT)
 
 pull:
 	@if [ "$(PROJECT)" = "" ]; then \
@@ -116,7 +116,7 @@ pull:
 		exit 1; \
 	fi
 	@echo "Downloading changes for project: $(PROJECT)"
-	ts-node src/clasp-clone.ts pull $(PROJECT)
+	npx ts-node src/clasp-clone.ts pull $(PROJECT)
 
 push:
 	@if [ "$(PROJECT)" = "" ]; then \
@@ -125,7 +125,7 @@ push:
 		exit 1; \
 	fi
 	@echo "Uploading changes for project: $(PROJECT)"
-	ts-node src/clasp-clone.ts push $(PROJECT)
+	npx ts-node src/clasp-clone.ts push $(PROJECT)
 
 status:
 	@if [ "$(PROJECT)" = "" ]; then \
@@ -134,7 +134,7 @@ status:
 		exit 1; \
 	fi
 	@echo "Project status for: $(PROJECT)"
-	ts-node src/clasp-clone.ts list $(PROJECT)
+	npx ts-node src/clasp-clone.ts list $(PROJECT)
 
 files:
 	@if [ "$(PROJECT)" = "" ]; then \
@@ -143,7 +143,7 @@ files:
 		exit 1; \
 	fi
 	@echo "Extracting files from project: $(PROJECT)"
-	ts-node src/functions/extract-files.ts $(PROJECT)
+	npx ts-node src/functions/extract-files.ts $(PROJECT)
 
 new:
 	@if [ "$(PROJECT)" = "" ]; then \
@@ -209,20 +209,20 @@ list:
 
 projects:
 	@echo "Showing all configured projects:"
-	ts-node src/clasp-clone.ts projects
+	npx ts-node src/clasp-clone.ts projects
 
 # System commands
 update:
 	@echo "Checking for updates from gas-boilerplate..."
-	ts-node src/utils/version-updater.ts check
+	npx ts-node src/utils/version-updater.ts check
 
 upgrade:
 	@echo "Updating system..."
-	ts-node src/utils/version-updater.ts update
+	npx ts-node src/utils/version-updater.ts update
 
 validate:
 	@echo "Validating system configuration..."
-	ts-node src/utils/config-validator.ts
+	npx ts-node src/utils/config-validator.ts
 
 logs:
 	@echo "Showing recent logs..."
