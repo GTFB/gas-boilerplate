@@ -52,41 +52,21 @@ release: patch
 
 patch:
 	@echo "Creating patch release..."
-	@echo "🔄 Auto-committing and pushing changes..."
-	@git add .
-	@git commit -m "feat: patch release - $(shell date +%Y-%m-%d_%H-%M-%S)"
-	@git push origin main
-	@echo "✅ Patch release committed and pushed!"
 	@echo "📦 Creating release package..."
 	npx ts-node src/scripts/create-release.ts patch
 
 minor:
 	@echo "Creating minor release..."
-	@echo "🔄 Auto-committing and pushing changes..."
-	@git add .
-	@git commit -m "feat: minor release - $(shell date +%Y-%m-%d_%H-%M-%S)"
-	@git push origin main
-	@echo "✅ Minor release committed and pushed!"
 	@echo "📦 Creating release package..."
 	npx ts-node src/scripts/create-release.ts minor
 
 major:
 	@echo "Creating major release..."
-	@echo "🔄 Auto-committing and pushing changes..."
-	@git add .
-	@git commit -m "feat: major release - $(shell date +%Y-%m-%d_%H-%M-%S)"
-	@git push origin main
-	@echo "✅ Major release committed and pushed!"
 	@echo "📦 Creating release package..."
 	npx ts-node src/scripts/create-release.ts major
 
 preview:
 	@echo "Creating preview release..."
-	@echo "🔄 Auto-committing and pushing changes..."
-	@git add .
-	@git commit -m "feat: preview release - $(shell date +%Y-%m-%d_%H-%M-%S)"
-	@git push origin main
-	@echo "✅ Preview release committed and pushed!"
 	@echo "📦 Creating release package..."
 	npx ts-node src/scripts/create-release.ts preview
 
