@@ -40,7 +40,7 @@ help:
 	@echo "  make clone PROJECT=myproject"
 	@echo "  make pull PROJECT=analytics"
 	@echo "  make release"
-	@echo "  make setup-repos https://github.com/username/ayva.git"
+	@echo "  make setup-repos REPO_URL=https://github.com/username/ayva.git"
 
 # Release commands
 release: patch
@@ -88,7 +88,10 @@ preview:
 # Repository setup commands
 setup-repos:
 	@echo "Setting up repositories..."
-	npx ts-node src/scripts/setup-repos.ts setup
+	npx ts-node src/scripts/setup-repos.ts setup $(REPO_URL)
+
+%:
+	@:
 
 test-repos:
 	@echo "Testing repository connections..."
