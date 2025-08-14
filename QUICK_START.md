@@ -1,5 +1,10 @@
 # 🚀 Quick Start - Step-by-Step Guide
 
+## 📋 Prerequisites
+- [Node.js 18+](https://nodejs.org/) installed
+- Google Apps Script API enabled
+- Service account key file (`key.json`) - see **[🔐 Google Cloud Setup](docs/google-cloud-setup.md)**
+
 ## 📋 What to do in order
 
 ### 1️⃣ **Create a folder for your project**
@@ -44,6 +49,12 @@ make test-repos
 ```bash
 # Create project myproject
 make new PROJECT=myproject
+
+# Add SCRIPT_ID to projects.json
+# Edit projects.json and add your Google Apps Script project ID
+
+# Clone the project
+make clone PROJECT=myproject
 ```
 
 ## ✅ What happens automatically
@@ -52,6 +63,10 @@ make new PROJECT=myproject
 - ✅ **origin** will be set to your ayva repository
 - ✅ System will check all connections
 - ✅ Project folder structure will be created
+
+## ⚠️ Important Note
+
+**After `make new PROJECT=name`**, you must manually add the `SCRIPT_ID` to `projects.json` before running `make clone`. The `SCRIPT_ID` is the ID from your Google Apps Script project URL.
 
 ## 🔄 After setup
 
@@ -118,4 +133,5 @@ ayva/                          # Your project folder
 
 ## 📖 Detailed documentation
 
-See `docs/repository-setup.md` for detailed description of all capabilities.
+- **[📋 Projects Configuration](docs/projects-configuration.md)** - How to configure projects.json with SCRIPT_ID
+- **[📋 Repository Setup](docs/repository-setup.md)** - Detailed description of all capabilities

@@ -39,7 +39,12 @@ Clones a project from Google Apps Script:
 - Downloads all project files
 - Creates project structure
 - Adds project to `projects.json`
-- Requires `SCRIPT_ID` in `projects.json`
+- **Requires `SCRIPT_ID` in `projects.json`**
+
+**Important**: Before running `make clone`, you must:
+1. Run `make new PROJECT=name` to create project structure
+2. Edit `projects.json` and add your Google Apps Script project ID
+3. Then run `make clone PROJECT=name`
 
 **Example:**
 ```bash
@@ -175,22 +180,25 @@ Tests repository connections:
 make setup-repos https://github.com/username/my-repo.git
 make test-repos
 
-# 2. Create project
+# 2. Create project structure
 make new PROJECT=myproject
 
-# 3. Clone existing project
+# 3. Add SCRIPT_ID to projects.json
+# Edit projects.json and add your Google Apps Script project ID
+
+# 4. Clone existing project
 make clone PROJECT=myproject
 
-# 4. Download changes
+# 5. Download changes
 make pull PROJECT=myproject
 
-# 5. Edit code
+# 6. Edit code
 # ... your work ...
 
-# 6. Upload changes
+# 7. Upload changes
 make push PROJECT=myproject
 
-# 7. Create release
+# 8. Create release
 make release
 ```
 

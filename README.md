@@ -24,9 +24,9 @@
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ installed
+- [Node.js 18+](https://nodejs.org/) installed
 - Google Apps Script API enabled
-- Service account key file (`key.json`)
+- Service account key file (`key.json`) - see **[🔐 Google Cloud Setup](docs/google-cloud-setup.md)**
 
 ### Installation
 ```bash
@@ -51,11 +51,15 @@ make test-repos
 make new PROJECT=myproject
 ```
 
+**Note**: Make sure you have [Node.js 18+](https://nodejs.org/) installed before running `npm install`.
+
 ### Environment Setup
 ```bash
 # Set Google credentials path
 set GOOGLE_APPLICATION_CREDENTIALS=C:\path\to\system\key.json
 ```
+
+**Need help creating `key.json`?** See **[🔐 Google Cloud Setup](docs/google-cloud-setup.md)** for step-by-step instructions.
 
 ## 📚 Commands
 
@@ -96,12 +100,16 @@ make test-repos             # Test repository connections
 
 ```bash
 # Complete project workflow
-make clone PROJECT=myproject    # Clone project
-make pull PROJECT=myproject     # Download files
+make new PROJECT=myproject      # Create project structure
+# Add SCRIPT_ID to projects.json
+make clone PROJECT=myproject    # Clone project from Google Apps Script
+make pull PROJECT=myproject     # Download latest files
 # ... edit your code ...
-make push PROJECT=myproject     # Upload changes
+make push PROJECT=myproject     # Upload changes to Google Apps Script
 make release                    # Create release
 ```
+
+**Important**: After `make new PROJECT=name`, you must add the `SCRIPT_ID` to `projects.json` before running `make clone`.
 
 ## 📁 Project Structure
 
@@ -120,6 +128,8 @@ my-project/                          # Your project folder
 ## 📖 Documentation
 
 - **[🚀 Quick Start Guide](QUICK_START.md)** - Step-by-step setup instructions
+- **[🔐 Google Cloud Setup](docs/google-cloud-setup.md)** - Service account and key.json setup
+- **[📋 Projects Configuration](docs/projects-configuration.md)** - How to configure projects.json with SCRIPT_ID
 - **[📚 Commands Reference](docs/commands-reference.md)** - Complete command documentation
 - **[🚀 Releases and Updates](docs/releases-and-updates.md)** - Release system and update workflow
 - **[📋 Repository Setup](docs/repository-setup.md)** - Detailed repository configuration
