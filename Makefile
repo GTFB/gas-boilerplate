@@ -99,52 +99,52 @@ test-repos:
 
 # Project management commands
 clone:
-	@if [ "$(PROJECT)" = "" ]; then \
-		echo "ERROR: Specify project name: make clone PROJECT=name"; \
-		echo "Example: make clone PROJECT=myproject"; \
-		exit 1; \
-	fi
+	@if "$(PROJECT)"=="" ( \
+		echo "ERROR: Specify project name: make clone PROJECT=name" && \
+		echo "Example: make clone PROJECT=myproject" && \
+		exit /b 1 \
+	)
 	@echo "Cloning project: $(PROJECT)"
-	@if [ -d "../$(PROJECT)" ]; then \
-		echo "ERROR: Project $(PROJECT) already exists!"; \
-		exit 1; \
-	fi
+	@if exist "..\$(PROJECT)" ( \
+		echo "ERROR: Project $(PROJECT) already exists!" && \
+		exit /b 1 \
+	)
 	@echo "Creating project structure and adding to configuration..."
 	npx ts-node src/clasp-clone.ts clone $(PROJECT)
 
 pull:
-	@if [ "$(PROJECT)" = "" ]; then \
-		echo "ERROR: Specify project name: make pull PROJECT=name"; \
-		echo "Example: make pull PROJECT=myproject"; \
-		exit 1; \
-	fi
+	@if "$(PROJECT)"=="" ( \
+		echo "ERROR: Specify project name: make pull PROJECT=name" && \
+		echo "Example: make pull PROJECT=myproject" && \
+		exit /b 1 \
+	)
 	@echo "Downloading changes for project: $(PROJECT)"
 	npx ts-node src/clasp-clone.ts pull $(PROJECT)
 
 push:
-	@if [ "$(PROJECT)" = "" ]; then \
-		echo "ERROR: Specify project name: make push PROJECT=name"; \
-		echo "Example: make push PROJECT=myproject"; \
-		exit 1; \
-	fi
+	@if "$(PROJECT)"=="" ( \
+		echo "ERROR: Specify project name: make push PROJECT=name" && \
+		echo "Example: make push PROJECT=myproject" && \
+		exit /b 1 \
+	)
 	@echo "Uploading changes for project: $(PROJECT)"
 	npx ts-node src/clasp-clone.ts push $(PROJECT)
 
 status:
-	@if [ "$(PROJECT)" = "" ]; then \
-		echo "ERROR: Specify project name: make status PROJECT=name"; \
-		echo "Example: make status PROJECT=myproject"; \
-		exit 1; \
-	fi
+	@if "$(PROJECT)"=="" ( \
+		echo "ERROR: Specify project name: make status PROJECT=name" && \
+		echo "Example: make status PROJECT=myproject" && \
+		exit /b 1 \
+	)
 	@echo "Project status for: $(PROJECT)"
 	npx ts-node src/clasp-clone.ts list $(PROJECT)
 
 files:
-	@if [ "$(PROJECT)" = "" ]; then \
-		echo "ERROR: Specify project name: make files PROJECT=name"; \
-		echo "Example: make files PROJECT=myproject"; \
-		exit 1; \
-	fi
+	@if "$(PROJECT)"=="" ( \
+		echo "ERROR: Specify project name: make files PROJECT=name" && \
+		echo "Example: make files PROJECT=myproject" && \
+		exit /b 1 \
+	)
 	@echo "Extracting files from project: $(PROJECT)"
 	npx ts-node src/functions/extract-files.ts $(PROJECT)
 
@@ -204,11 +204,11 @@ new:
 
 list:
 	@echo "Project list:"
-	@for dir in ../*/; do \
-		if [ "$$dir" != "../system/" ]; then \
-			echo "  $$(basename "$$dir")"; \
-		fi; \
-	done
+	@for /d %%d in (..\*) do ( \
+		if not "%%d"=="..\system" ( \
+			echo   %%~nxd \
+		) \
+	)
 	@echo ""
 	@echo "To clone: make clone PROJECT=name"
 
