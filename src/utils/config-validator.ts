@@ -221,38 +221,77 @@ export class ConfigValidator {
 
 // Main function for command line execution
 function main(): void {
-  console.log('🔍 Validating system configuration...\n');
+  const validationType = process.argv[2];
   
-  const validator = new ConfigValidator();
-  
-  try {
-    const result = validator.validateConfig();
-    const { config, projects } = result;
+  if (validationType === 'basic') {
+    console.log('🔍 Validating basic configuration (without key.json)...\n');
     
-    console.log('\n📋 Configuration Summary:');
-    console.log(`Default project: ${config.defaultProject}`);
-    console.log(`Projects path: ${config.projectsPath}`);
-    console.log(`System path: ${config.systemPath}`);
-    console.log(`Logs path: ${config.logsPath}`);
+    const validator = new ConfigValidator();
     
-    console.log('\n📁 Projects:');
-    Object.entries(projects).forEach(([name, project]) => {
-      const status = project.id ? '✅ Configured' : '⚠️ No ID';
-      console.log(`  ${name}: ${project.title} - ${status}`);
-      if (project.description) {
-        console.log(`    ${project.description}`);
+    try {
+      const result = validator.validateBasicConfig();
+      const { config, projects } = result;
+      
+      console.log('\n📋 Basic Configuration Summary:');
+      console.log(`Default project: ${config.defaultProject}`);
+      console.log(`Projects path: ${config.projectsPath}`);
+      console.log(`System path: ${config.systemPath}`);
+      console.log(`Logs path: ${config.logsPath}`);
+      
+      console.log('\n📁 Projects:');
+      Object.entries(projects).forEach(([name, project]) => {
+        const status = project.id ? '✅ Configured' : '⚠️ No ID';
+        console.log(`  ${name}: ${project.title} - ${status}`);
+        if (project.description) {
+          console.log(`    ${project.description}`);
+        }
+      });
+      
+      console.log('\n✅ Basic validation passed successfully!');
+      console.log('⚠️  Note: key.json validation skipped (not required for releases)');
+      
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        console.error('❌ Basic configuration validation failed:', error.message);
+      } else {
+        console.error('❌ Unexpected error:', error);
       }
-    });
-    
-    console.log('\n✅ All validations passed successfully!');
-    
-  } catch (error) {
-    if (error instanceof ValidationError || error instanceof AuthenticationError) {
-      console.error('❌ Configuration validation failed:', error.message);
-    } else {
-      console.error('❌ Unexpected error:', error);
+      process.exit(1);
     }
-    process.exit(1);
+  } else {
+    console.log('🔍 Validating full system configuration...\n');
+    
+    const validator = new ConfigValidator();
+    
+    try {
+      const result = validator.validateConfig();
+      const { config, projects } = result;
+      
+      console.log('\n📋 Configuration Summary:');
+      console.log(`Default project: ${config.defaultProject}`);
+      console.log(`Projects path: ${config.projectsPath}`);
+      console.log(`System path: ${config.systemPath}`);
+      console.log(`Logs path: ${config.logsPath}`);
+      
+      console.log('\n📁 Projects:');
+      Object.entries(projects).forEach(([name, project]) => {
+        const status = project.id ? '✅ Configured' : '⚠️ No ID';
+        console.log(`  ${name}: ${project.title} - ${status}`);
+        if (project.description) {
+          console.log(`    ${project.description}`);
+        }
+      });
+      
+      console.log('\n✅ All validations passed successfully!');
+      
+    } catch (error) {
+      if (error instanceof ValidationError || error instanceof AuthenticationError) {
+        console.error('❌ Configuration validation failed:', error.message);
+      } else {
+        console.error('❌ Unexpected error:', error);
+      }
+      process.exit(1);
+    }
   }
 }
 

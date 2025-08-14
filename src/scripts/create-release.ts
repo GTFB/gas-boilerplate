@@ -24,9 +24,9 @@ export class ReleaseCreator {
       // 1. Check if working directory is clean
       this.checkWorkingDirectory();
       
-      // 2. Validate configuration
+      // 2. Validate configuration (basic validation without key.json)
       console.log('✅ Validating configuration...');
-      execSync('npm run validate', { stdio: 'inherit' });
+      execSync('npx ts-node src/utils/config-validator.ts basic', { stdio: 'inherit' });
       
       // 3. Create new version
       console.log(`📦 Creating new ${type} version...`);
