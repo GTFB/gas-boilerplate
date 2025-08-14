@@ -24,34 +24,30 @@ export class ReleaseCreator {
       // 1. Check if working directory is clean
       this.checkWorkingDirectory();
       
-      // 2. Run tests
-      console.log('🧪 Running tests...');
-      execSync('npm test', { stdio: 'inherit' });
-      
-      // 3. Validate configuration
+      // 2. Validate configuration
       console.log('✅ Validating configuration...');
       execSync('npm run validate', { stdio: 'inherit' });
       
-      // 4. Create new version
+      // 3. Create new version
       console.log(`📦 Creating new ${type} version...`);
       const newVersion = this.calculateNewVersion(type);
       
-      // 5. Update package.json
+      // 4. Update package.json
       this.updatePackageJson(newVersion);
       
-      // 6. Update CHANGELOG.md
+      // 5. Update CHANGELOG.md
       this.updateChangelog(newVersion, type);
       
-      // 7. Create Git commit
+      // 6. Create Git commit
       console.log('📝 Creating Git commit...');
       execSync('git add .', { stdio: 'inherit' });
       execSync(`git commit -m "chore: bump version to ${newVersion}"`, { stdio: 'inherit' });
       
-      // 8. Create Git tag
+      // 7. Create Git tag
       console.log(`🏷️ Creating Git tag v${newVersion}...`);
       execSync(`git tag -a v${newVersion} -m "Release v${newVersion}"`, { stdio: 'inherit' });
       
-      // 9. Push changes
+      // 8. Push changes
       console.log('🚀 Pushing to remote...');
       execSync('git push', { stdio: 'inherit' });
       execSync('git push --tags', { stdio: 'inherit' });

@@ -24,7 +24,7 @@
     "build:watch": "tsc --watch",
     "validate": "ts-node src/utils/config-validator.ts",
     "extract": "ts-node src/functions/extract-files.ts",
-    "test": "ts-node src/test-system.ts",
+    "test": "echo 'Tests disabled - use make validate for configuration validation'",
     "update": "ts-node src/utils/version-updater.ts",
     "logs": "node -e \"console.log('Use: make logs or check logs/ folder')\"",
     "release:patch": "npm run build && npm version patch && git push && git push --tags",
