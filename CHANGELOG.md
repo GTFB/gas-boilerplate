@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.3.3] - 2025-08-14
+
+### 🐛 Patch Release
+- Automated release v1.3.3
+- All tests passed
+- Configuration validated
+
+### Changed
+- Version bumped to 1.3.3
+
+---
+
+
+
+## [1.3.2] - 2025-08-14
+
+### 🐛 Patch Release
+- Automated release v1.3.2
+- All tests passed
+- Configuration validated
+
+### Changed
+- Version bumped to 1.3.2
+
+---
+
+
+
 ## [1.3.1] - 2025-08-14
 
 ### 🐛 Patch Release

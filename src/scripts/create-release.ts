@@ -20,33 +20,33 @@ export class ReleaseCreator {
 
   async createRelease(): Promise<void> {
     try {
-      // 1. Add all changes to git
-      console.log('📝 Adding all changes to git...');
-      execSync('git add .', { stdio: 'pipe' });
-      
-      // 2. Select release type
+      // 1. Select release type
       console.log('🔄 Selecting release type...');
       const releaseType = await this.selectReleaseType();
       console.log(`✅ Selected: ${releaseType} release`);
       
-      // 3. Get commit message
+      // 2. Get commit message
       console.log('💬 Getting commit message...');
       const commitMessage = await this.getCommitMessage();
       console.log(`✅ Commit message: ${commitMessage}`);
       
-      // 4. Validate configuration
+      // 3. Validate configuration
       console.log('✅ Validating configuration...');
       execSync('npx ts-node src/utils/config-validator.ts basic', { stdio: 'pipe' });
       
-      // 5. Create new version
+      // 4. Create new version
       console.log(`📦 Creating new ${releaseType} version...`);
       const newVersion = this.calculateNewVersion(releaseType);
       
-      // 6. Update package.json
+      // 5. Update package.json
       this.updatePackageJson(newVersion);
       
-      // 7. Update CHANGELOG.md
+      // 6. Update CHANGELOG.md
       this.updateChangelog(newVersion, releaseType);
+      
+      // 7. Add all changes to git (including version updates)
+      console.log('📝 Adding all changes to git...');
+      execSync('git add .', { stdio: 'inherit' });
       
       // 8. Create Git commit
       console.log('📝 Creating Git commit...');
