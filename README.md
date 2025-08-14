@@ -28,7 +28,43 @@
 - Google Apps Script API enabled
 - Service account key file (`key.json`) - see **[🔐 Google Cloud Setup](docs/google-cloud-setup.md)**
 
-### Installation
+### Installation Options
+
+#### Option 1: Clone as Submodule (Recommended)
+```bash
+# 1. Create project folder
+mkdir my-project
+cd my-project
+
+# 2. Add gas-boilerplate as submodule
+git submodule add https://github.com/GTFB/gas-boilerplate.git system
+
+# 3. Initialize submodule
+git submodule init
+git submodule update
+
+# 4. Install dependencies
+cd system
+npm install
+cd ..
+
+# 5. Setup repositories (replace with your repo URL)
+cd system
+make setup-repos REPO_URL=https://github.com/your-username/your-repo.git
+cd ..
+
+# 6. Test setup
+cd system
+make test-repos
+cd ..
+
+# 7. Create your first project
+cd system
+make new PROJECT=myproject
+cd ..
+```
+
+#### Option 2: Clone as Regular Folder
 ```bash
 # 1. Create project folder
 mkdir my-project
@@ -51,6 +87,8 @@ make test-repos
 make new PROJECT=myproject
 ```
 
+**💡 Recommendation**: Use **Option 1 (Submodule)** for automatic updates and better version control.
+
 **Note**: Make sure you have [Node.js 18+](https://nodejs.org/) installed before running `npm install`.
 
 ### Environment Setup
@@ -62,6 +100,8 @@ set GOOGLE_APPLICATION_CREDENTIALS=C:\path\to\system\key.json
 **Need help creating `key.json`?** See **[🔐 Google Cloud Setup](docs/google-cloud-setup.md)** for step-by-step instructions.
 
 ## 📚 Commands
+
+> **💡 New to submodules?** See **[📖 Submodule Setup Guide](SUBMODULE_SETUP.md)** for detailed instructions.
 
 ### Project Management
 ```bash
@@ -79,6 +119,14 @@ make projects               # List all configured projects
 make validate               # Validate system configuration
 make update                 # Check for updates from gas-boilerplate
 make upgrade                # Apply updates from gas-boilerplate
+```
+
+### Submodule Commands (if using system as submodule)
+```bash
+git submodule update --remote system  # Update system to latest version
+git submodule status                   # Check submodule status
+git submodule init                     # Initialize submodule
+git submodule update                   # Update submodule to tracked commit
 ```
 
 ### Release Commands
