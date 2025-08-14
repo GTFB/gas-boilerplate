@@ -40,6 +40,7 @@ help:
 	@echo "  make clone PROJECT=myproject"
 	@echo "  make pull PROJECT=analytics"
 	@echo "  make release"
+	@echo "  make patch"
 	@echo "  make setup-repos REPO_URL=https://github.com/username/ayva.git"
 
 # Version bumping function
@@ -53,22 +54,22 @@ release: patch
 patch:
 	@echo "Creating patch release..."
 	@echo "📦 Creating release package..."
-	npx ts-node src/scripts/create-release.ts patch
+	npx ts-node src/scripts/create-release.ts
 
 minor:
 	@echo "Creating minor release..."
 	@echo "📦 Creating release package..."
-	npx ts-node src/scripts/create-release.ts minor
+	npx ts-node src/scripts/create-release.ts
 
 major:
 	@echo "Creating major release..."
 	@echo "📦 Creating release package..."
-	npx ts-node src/scripts/create-release.ts major
+	npx ts-node src/scripts/create-release.ts
 
 preview:
 	@echo "Creating preview release..."
 	@echo "📦 Creating release package..."
-	npx ts-node src/scripts/create-release.ts preview
+	npx ts-node src/scripts/create-release.ts
 
 # Repository setup commands
 setup-repos:

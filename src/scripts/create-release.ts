@@ -3,6 +3,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
+import * as readline from 'readline';
 import { logger } from '../utils/logger';
 import { ReleaseType, PackageJson } from '../types';
 
@@ -17,38 +18,45 @@ export class ReleaseCreator {
     this.changelogPath = 'CHANGELOG.md';
   }
 
-  async createRelease(type: ReleaseType = 'patch'): Promise<void> {
-    console.log(`🚀 Creating ${type} release...`);
-    
+  async createRelease(): Promise<void> {
     try {
-      // 1. Check if working directory is clean
-      this.checkWorkingDirectory();
+      // 1. Add all changes to git
+      console.log('📝 Adding all changes to git...');
+      execSync('git add .', { stdio: 'pipe' });
       
-      // 2. Validate configuration (basic validation without key.json)
+      // 2. Select release type
+      console.log('🔄 Selecting release type...');
+      const releaseType = await this.selectReleaseType();
+      console.log(`✅ Selected: ${releaseType} release`);
+      
+      // 3. Get commit message
+      console.log('💬 Getting commit message...');
+      const commitMessage = await this.getCommitMessage();
+      console.log(`✅ Commit message: ${commitMessage}`);
+      
+      // 4. Validate configuration
       console.log('✅ Validating configuration...');
       execSync('npx ts-node src/utils/config-validator.ts basic', { stdio: 'pipe' });
       
-      // 3. Create new version
-      console.log(`📦 Creating new ${type} version...`);
-      const newVersion = this.calculateNewVersion(type);
+      // 5. Create new version
+      console.log(`📦 Creating new ${releaseType} version...`);
+      const newVersion = this.calculateNewVersion(releaseType);
       
-      // 4. Update package.json
+      // 6. Update package.json
       this.updatePackageJson(newVersion);
       
-      // 5. Update CHANGELOG.md
-      this.updateChangelog(newVersion, type);
+      // 7. Update CHANGELOG.md
+      this.updateChangelog(newVersion, releaseType);
       
-      // 6. Create Git commit
+      // 8. Create Git commit
       console.log('📝 Creating Git commit...');
-      const commitMessage = `chore: bump version to ${newVersion}`;
-      execSync('git add .', { stdio: 'pipe' });
       execSync(`git commit -m "${commitMessage}" --no-verify`, { stdio: 'pipe' });
       
-      // 7. Create Git tag
+      // 9. Create Git tag
       console.log(`🏷️ Creating Git tag v${newVersion}...`);
       execSync(`git tag -a v${newVersion} -m "Release v${newVersion}"`, { stdio: 'pipe' });
       
-      // 8. Push changes
+      // 10. Push changes
       console.log('🚀 Pushing to remote...');
       execSync('git push -q', { stdio: 'pipe' });
       execSync('git push --tags -q', { stdio: 'pipe' });
@@ -82,16 +90,7 @@ export class ReleaseCreator {
     }
   }
 
-  private checkWorkingDirectory(): void {
-    try {
-      const status = execSync('git status --porcelain', { encoding: 'utf8' }).trim();
-      if (status) {
-        throw new Error('Working directory is not clean. Please commit or stash changes first.');
-      }
-    } catch (error) {
-      throw new Error('Failed to check git status. Make sure you are in a git repository.');
-    }
-  }
+
 
   private calculateNewVersion(type: ReleaseType): string {
     const parts = this.currentVersion.split('.').map(Number);
@@ -210,7 +209,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     }
   }
 
+  private async selectReleaseType(): Promise<ReleaseType> {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
 
+    return new Promise((resolve) => {
+      rl.question('Select release type (Enter for minor, 1=major, 2=patch, 3=minor): ', (answer) => {
+        rl.close();
+        const choice = answer.trim();
+        
+        switch (choice) {
+          case '1':
+            resolve('major');
+            break;
+          case '2':
+            resolve('patch');
+            break;
+          case '3':
+          case '':
+          default:
+            resolve('minor');
+            break;
+        }
+      });
+    });
+  }
+
+  private async getCommitMessage(): Promise<string> {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    return new Promise((resolve) => {
+      rl.question('Enter commit message: ', (answer) => {
+        rl.close();
+        const message = answer.trim();
+        if (!message) {
+          throw new Error('Commit message cannot be empty');
+        }
+        resolve(message);
+      });
+    });
+  }
 
   // Method to get release summary
   getReleaseSummary(): { currentVersion: string; nextVersions: Record<ReleaseType, string> } {
@@ -233,33 +276,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 // Main execution
 async function main(): Promise<void> {
-  const releaseType = process.argv[2] as ReleaseType || 'patch';
-  const validTypes: ReleaseType[] = ['major', 'minor', 'patch', 'preview'];
-  
-  if (!validTypes.includes(releaseType)) {
-    console.error('❌ Invalid release type. Use: major, minor, patch, or preview');
-    console.log('📋 Examples:');
-    console.log('   node scripts/create-release.js patch    # 1.0.0 → 1.0.1');
-    console.log('   node scripts/create-release.js minor    # 1.0.0 → 1.1.0');
-    console.log('   node scripts/create-release.js major    # 1.0.0 → 2.0.0');
-    console.log('   node scripts/create-release.js preview  # 1.0.0 → 1.0.1-beta.1');
-    process.exit(1);
-  }
-  
   try {
     const creator = new ReleaseCreator();
     
-    // Show release preview
+    // Show current version
     const summary = creator.getReleaseSummary();
-    console.log(`\n📋 Release Preview:`);
-    console.log(`Current version: ${summary.currentVersion}`);
-    console.log(`New version: ${summary.nextVersions[releaseType]}`);
-    console.log(`Type: ${releaseType}`);
+    console.log(`\n📋 Current version: ${summary.currentVersion}`);
     
-    // Confirm release
-    console.log('\n🚀 Proceeding with release creation...');
+    // Start release process
+    console.log('\n🚀 Starting release process...');
     
-    await creator.createRelease(releaseType);
+    await creator.createRelease();
     
   } catch (error) {
     console.error('❌ Release creation failed:', error instanceof Error ? error.message : 'Unknown error');
