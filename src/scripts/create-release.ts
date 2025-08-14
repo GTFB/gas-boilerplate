@@ -50,16 +50,23 @@ export class ReleaseCreator {
       
       // 8. Create Git commit
       console.log('📝 Creating Git commit...');
-      execSync(`git commit -m "${commitMessage}" --no-verify`, { stdio: 'pipe' });
+      execSync(`git commit -m "${commitMessage}" --no-verify`, { stdio: 'inherit' });
       
       // 9. Create Git tag
       console.log(`🏷️ Creating Git tag v${newVersion}...`);
-      execSync(`git tag -a v${newVersion} -m "Release v${newVersion}"`, { stdio: 'pipe' });
+      execSync(`git tag -a v${newVersion} -m "Release v${newVersion}"`, { stdio: 'inherit' });
       
       // 10. Push changes
       console.log('🚀 Pushing to remote...');
-      execSync('git push -q', { stdio: 'pipe' });
-      execSync('git push --tags -q', { stdio: 'pipe' });
+      execSync('git push', { stdio: 'inherit' });
+      execSync('git push --tags', { stdio: 'inherit' });
+      
+      // 11. Verify push was successful
+      console.log('✅ Verifying push was successful...');
+      const pushStatus = execSync('git status --porcelain', { encoding: 'utf8' }).trim();
+      if (pushStatus) {
+        throw new Error(`Push verification failed. Uncommitted changes found: ${pushStatus}`);
+      }
       
       console.log(`🎉 Release v${newVersion} created successfully!`);
       console.log('📋 Next steps:');
@@ -216,7 +223,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     });
 
     return new Promise((resolve) => {
-      rl.question('Select release type (Enter for minor, 1=major, 2=patch, 3=minor): ', (answer) => {
+      rl.question('Select release type (Enter for patch, 1=major, 2=minor, 3=patch): ', (answer) => {
         rl.close();
         const choice = answer.trim();
         
@@ -225,12 +232,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
             resolve('major');
             break;
           case '2':
-            resolve('patch');
+            resolve('minor');
             break;
           case '3':
           case '':
           default:
-            resolve('minor');
+            resolve('patch');
             break;
         }
       });
