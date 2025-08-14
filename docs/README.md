@@ -1,157 +1,137 @@
-# Google Apps Script CLI - Technical Documentation
+# GAS Boilerplate - Documentation
 
-## 📚 System Documentation
+## Quick Start
 
-Welcome to the technical documentation of the Google Apps Script CLI system. Here you will find detailed information about all aspects of the system.
-
-## 📖 Available Documents
-
-### 🚀 [Setup](setup.md)
-**Step-by-step guide for system installation and configuration**
-- Enable Google Apps Script API
-- Install Node.js
-- Configure service account
-- Environment variables configuration
-- System verification
-
-### 📋 [Commands](commands.md)
-**Detailed description of all available commands**
-- Project commands (clone, pull, push, status)
-- Utility commands (ff, validate, logs, config)
-- Admin commands (list, new, projects, help)
-- Usage examples
-- Important notes
-
-### 🏗️ [Architecture](architecture.md)
-**Technical description of system architecture**
-- File and folder structure
-- Key components
-- Data flows
-- Logging system
-- Extensibility principles
-
-### 🔍 [Troubleshooting](troubleshooting.md)
-**Solutions for common problems and errors**
-- Problem diagnosis
-- Common errors and solutions
-- Configuration issues
-- Monitoring and prevention
-- Getting help
-
-## 🎯 Quick Start
-
-### 1. Setup
-```cmd
-# Установить зависимости
+```bash
 npm install
-
-# Настроить переменную окружения
-set GOOGLE_APPLICATION_CREDENTIALS=C:\path\to\key.json
+make help
 ```
 
-### 2. Verification
-```cmd
-make validate
-make projects
+## What You Need
+
+1. **Node.js 18+** - JavaScript runtime
+2. **Google Cloud project** - for Apps Script API
+3. **Service account key** - for authentication
+
+## Setup Steps
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Get Google credentials:**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Enable Google Apps Script API
+   - Create service account
+   - Download `key.json`
+   - Place in project root
+
+3. **Verify setup:**
+   ```bash
+   make validate
+   make config
+   ```
+
+## Commands
+
+```bash
+make new name          # create project
+make clone name        # add to config
+make pull name         # download
+make push name         # upload
+make projects          # show projects
+make config            # show config
+make validate          # validate
 ```
 
-### 3. Basic Commands
-```cmd
-make clone PROJECT=name     # Clone project
-make pull PROJECT=name      # Download changes
-make push PROJECT=name      # Upload changes
-make files PROJECT=name     # Extract data
+## Structure
+
+```
+gas-boilerplate/
+├── src/gas.ts          # main CLI
+├── Makefile            # command wrappers
+└── config.json         # settings
 ```
 
-## 🔧 Configuration
+## Complete Workflow
 
-### Main Files
-- **`config.json`** - system settings
-- **`projects.json`** - project definitions
-- **`key.json`** - service account key
+1. **Create project:**
+   ```bash
+   make new dashboard
+   ```
 
-### Project Structure
-```
-project-name/
-├── system/                     # System files
-├── Code.js                     # Main GAS code
-├── index.html                  # HTML for extraction
-└── files/                      # Extracted files
-```
+2. **Get SCRIPT_ID:**
+   - Go to [Google Apps Script](https://script.google.com/)
+   - Create new project or open existing
+   - Copy ID from URL: `https://script.google.com/d/SCRIPT_ID/edit`
 
-## 📝 Logging System
+3. **Configure project:**
+   - Edit `projects.json`
+   - Add your SCRIPT_ID
 
-- **Levels:** DEBUG, INFO, WARN, ERROR
-- **Format:** Daily files `YYYY-MM-DD.md`
-- **Time:** Moscow timezone
-- **Usage:** Automatic logging of all operations
+4. **Setup project:**
+   ```bash
+   make clone dashboard
+   make pull dashboard
+   ```
 
-## 🔐 Security
+5. **Work with project:**
+   - Edit code in `../dashboard/files/`
+   - Test in Google Apps Script editor
 
-- Service account for authentication
-- Key `key.json` excluded from Git
-- Minimal required access rights
-- Environment variables for sensitive data
+6. **Upload changes:**
+   ```bash
+   make push dashboard
+   ```
 
-## 🚀 Extensibility
+## Examples
 
-### Adding New Functions
-1. Create file in `functions/`
-2. Export in `functions/index.js`
-3. Add command in `Makefile`
-4. Update documentation
-
-### Adding New Commands
-1. Implement logic in script
-2. Add handling in `commands.bat`
-3. Update help
-4. Test functionality
-
-## 📞 Support
-
-### Diagnostic Commands
-```cmd
-make validate          # Check configuration
-make logs              # Show logs
-make config            # Show settings
-make projects          # Show projects
+```bash
+make new dashboard
+# add SCRIPT_ID to projects.json
+make clone dashboard
+make pull dashboard
+# edit code
+make push dashboard
 ```
 
-### System Logs
-- Automatic creation in `logs/` folder
-- Detailed information about all operations
-- Markdown format for easy reading
+## Configuration Files
 
-### Documentation
-- Modular structure for easy navigation
-- Usage examples
-- Solutions for common problems
-- Technical details
+### projects.json
+```json
+{
+  "dashboard": {
+    "id": "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
+    "title": "Dashboard",
+    "description": "Dashboard application"
+  }
+}
+```
 
-## 🔄 Updates
+### config.json
+```json
+{
+  "defaultProject": "dashboard",
+  "projectsPath": "../",
+  "systemPath": "./",
+  "logsPath": "./logs/"
+}
+```
 
-The system is regularly updated for:
-- Compatibility with new Google Apps Script API versions
-- Performance improvements
-- Adding new features
-- Bug fixes
+## Troubleshooting
 
-## 📊 Monitoring
+- **Project not found:** Run `make new projectname` first
+- **SCRIPT_ID missing:** Edit `projects.json` and add your ID
+- **Authentication failed:** Ensure `key.json` is present and valid
 
-### Regular Checks
-- Daily configuration validation
-- System logs review
-- Project status check
-- Performance monitoring
+## Need Help?
 
-### Backup
-- Configuration files copies
-- Key backups
-- Change documentation
-- Recovery testing
+```bash
+make help         # show all commands
+make validate     # check system
+make config       # show settings
+make projects     # show projects
+```
 
----
-
-**To get started see [Setup](setup.md)**
-**To learn commands see [Commands](commands.md)**
-**For problems see [Troubleshooting](troubleshooting.md)**
+Complete documentation with examples and troubleshooting.

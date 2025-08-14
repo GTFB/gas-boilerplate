@@ -18,5 +18,10 @@
     "id": "",
     "title": "Dashboard",
     "description": "Dashboard application"
+  },
+  "leads": {
+    "id": "",
+    "title": "Leads",
+    "description": "Lead management system"
   }
 }

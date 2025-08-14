@@ -1,67 +1,19 @@
 {
   "name": "gas-boilerplate",
-  "version": "1.3.3",
-  "description": "Google Apps Script CLI boilerplate for project management",
-  "main": "dist/clasp-clone.js",
-  "bin": {
-    "gas-cli": "dist/clasp-clone.js"
-  },
-  "files": [
-    "dist/**/*",
-    "templates/**/*",
-    "docs/**/*",
-    "README.md",
-    "LICENSE",
-    "CHANGELOG.md"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
+  "version": "1.3.4",
+  "description": "Google Apps Script development environment",
+  "main": "src/gas.ts",
   "scripts": {
-    "start": "node dist/clasp-clone.js",
-    "dev": "ts-node src/clasp-clone.ts",
     "build": "tsc",
-    "build:watch": "tsc --watch",
-    "validate": "ts-node src/utils/config-validator.ts",
-    "extract": "ts-node src/functions/extract-files.ts",
-    "test": "echo 'Tests disabled - use make validate for configuration validation'",
-    "update": "ts-node src/utils/version-updater.ts",
-    "logs": "node -e \"console.log('Use: make logs or check logs/ folder')\"",
-    "release:patch": "npm run build && npm version patch && git push && git push --tags",
-    "release:minor": "npm run build && npm version minor && git push && git push --tags",
-    "release:major": "npm run build && npm version major && git push && git push --tags",
-    "release:preview": "npm run build && npm version prerelease --preid=beta && git push && git push --tags",
-    "clean": "rimraf dist",
-    "prebuild": "npm run clean"
+    "gas": "ts-node src/gas.ts"
   },
-  "keywords": [
-    "google-apps-script",
-    "cli",
-    "gas",
-    "boilerplate",
-    "automation"
-  ],
-  "author": "System Administrator",
-  "license": "MIT",
-  "dependencies": {
-    "googleapis": "^156.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/google-apps-script": "^1.0.0",
     "@types/node": "^20.0.0",
-    "rimraf": "^5.0.0",
-    "ts-node": "^10.9.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0"
   },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yourusername/gas-boilerplate.git"
-  },
-  "homepage": "https://github.com/yourusername/gas-boilerplate#readme",
-  "bugs": {
-    "url": "https://github.com/yourusername/gas-boilerplate/issues"
   }
 }
