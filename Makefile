@@ -45,7 +45,7 @@ help:
 # Version bumping function
 bump-version:
 	@echo "🔄 Bumping version..."
-	@node -e "const fs = require('fs'); const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8')); const currentVersion = pkg.version; const parts = currentVersion.split('.'); const patch = parseInt(parts[2]) + 1; const newVersion = parts[0] + '.' + parts[1] + '.' + patch; console.log('Current version:', currentVersion); console.log('New version:', newVersion); fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2)); console.log('✅ Version bumped in package.json');"
+	@node -e "const fs = require('fs'); const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8')); const currentVersion = pkg.version; const parts = currentVersion.split('.'); const patch = parseInt(parts[2]) + 1; const newVersion = parts[0] + '.' + parts[1] + '.' + patch; console.log('Current version:', currentVersion); console.log('New version:', newVersion); pkg.version = newVersion; fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2)); console.log('✅ Version bumped in package.json'); const readme = fs.readFileSync('README.md', 'utf8'); const updatedReadme = readme.replace(/Version-\d+\.\d+\.\d+/g, 'Version-' + newVersion); fs.writeFileSync('README.md', updatedReadme); console.log('✅ Version bumped in README.md');"
 
 # Release commands
 release: patch
