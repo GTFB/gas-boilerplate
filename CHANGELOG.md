@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.2.7] - 2025-08-14
+
+### 🐛 Patch Release
+- Fixed Makefile for Windows compatibility
+- Converted Bash syntax to PowerShell commands
+- All targets now work on Windows with Chocolatey make
+
+### Changed
+- `new` target: Windows-compatible directory creation and file copying
+- `clone`, `pull`, `push`, `status`, `files` targets: Windows-compatible parameter validation
+- `list` target: Windows-compatible directory listing
+- `logs` target: Windows-compatible date handling and file reading
+
+### Added
+- Windows PowerShell syntax support
+- Cross-platform compatibility improvements
+
+---
+
 ## [1.2.5] - 2025-08-14
 
 ### 🐛 Patch Release

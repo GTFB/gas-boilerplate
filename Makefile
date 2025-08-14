@@ -2,7 +2,7 @@
 # Works on Windows with Chocolatey make
 # Unified interface for all commands
 
-.PHONY: help release patch minor major preview setup-repos test-repos clone pull push status list projects files validate logs config update upgrade new
+.PHONY: help release patch minor major preview setup-repos test-repos clone pull push status list projects files validate logs config update upgrade new bump-version
 
 # Default target
 help:
@@ -42,10 +42,15 @@ help:
 	@echo "  make release"
 	@echo "  make setup-repos REPO_URL=https://github.com/username/ayva.git"
 
+# Version bumping function
+bump-version:
+	@echo "🔄 Bumping version..."
+	@node -e "const fs = require('fs'); const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8')); const currentVersion = pkg.version; const parts = currentVersion.split('.'); const patch = parseInt(parts[2]) + 1; const newVersion = parts[0] + '.' + parts[1] + '.' + patch; console.log('Current version:', currentVersion); console.log('New version:', newVersion); fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2)); console.log('✅ Version bumped in package.json');"
+
 # Release commands
 release: patch
 
-patch:
+patch: bump-version
 	@echo "Creating patch release..."
 	@echo "🔄 Auto-committing and pushing changes..."
 	@git add .
@@ -55,7 +60,7 @@ patch:
 	@echo "📦 Creating release package..."
 	npx ts-node src/scripts/create-release.ts patch
 
-minor:
+minor: bump-version
 	@echo "Creating minor release..."
 	@echo "🔄 Auto-committing and pushing changes..."
 	@git add .
@@ -65,7 +70,7 @@ minor:
 	@echo "📦 Creating release package..."
 	npx ts-node src/scripts/create-release.ts minor
 
-major:
+major: bump-version
 	@echo "Creating major release..."
 	@echo "🔄 Auto-committing and pushing changes..."
 	@git add .
@@ -75,7 +80,7 @@ major:
 	@echo "📦 Creating release package..."
 	npx ts-node src/scripts/create-release.ts major
 
-preview:
+preview: bump-version
 	@echo "Creating preview release..."
 	@echo "🔄 Auto-committing and pushing changes..."
 	@git add .
