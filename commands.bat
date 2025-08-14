@@ -15,6 +15,8 @@ if "%1"=="logs" goto logs
 if "%1"=="config" goto config
 if "%1"=="update" goto update
 if "%1"=="upgrade" goto upgrade
+if "%1"=="setup-repos" goto setup-repos
+if "%1"=="test-repos" goto test-repos
 if "%1"=="test" goto test
 if "%1"=="release" goto release
 if "%1"=="help" goto help
@@ -38,8 +40,13 @@ echo Update commands:
 echo   make update              - check for updates from gas-boilerplate
 echo   make upgrade             - update from gas-boilerplate
 echo.
+echo Repository commands:
+echo   make setup-repos [url]   - setup upstream/origin repositories
+echo   make test-repos          - test repository connections
+echo.
 echo Testing commands:
 echo   make test                - test system components
+echo   make test-repo-setup     - test repository setup system
 echo.
 echo Release commands:
 echo   make release [type]      - create release (patch/minor/major/preview)
@@ -60,6 +67,8 @@ echo   make test                - test system components
 echo   make release [type]      - create release
 echo   make update              - check for updates
 echo   make upgrade             - update system
+echo   make setup-repos [url]   - setup repositories
+echo   make test-repos          - test connections
 goto end
 
 :clone
@@ -174,6 +183,11 @@ echo Testing system components...
 ts-node src\test-system.ts
 goto end
 
+:test-repo-setup
+echo Testing repository setup system...
+ts-node src\test-repo-setup.ts
+goto end
+
 :release
 if "%2"=="" (
   echo Creating patch release...
@@ -200,6 +214,23 @@ mkdir "..\%2\system"
 mkdir "..\%2\files"
 echo SUCCESS: Project %2 created
 echo Go to project: cd ..\%2
+goto end
+
+:setup-repos
+if "%2"=="" (
+  echo Setting up repositories without ayva URL...
+  echo You can provide ayva repository URL as second parameter
+  echo Example: make setup-repos https://github.com/username/ayva.git
+  ts-node src\scripts\setup-repos.ts setup
+) else (
+  echo Setting up repositories with ayva URL: %2
+  ts-node src\scripts\setup-repos.ts setup %2
+)
+goto end
+
+:test-repos
+echo Testing repository connections...
+ts-node src\scripts\setup-repos.ts test
 goto end
 
 :end

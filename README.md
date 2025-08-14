@@ -49,6 +49,7 @@
 ### Key Features
 - 🚀 **Git-style Commands** - `clone`, `pull`, `push`, `status` just like Git
 - 🔄 **Automatic Updates** - Keep your system up-to-date with gas-boilerplate
+- 🏗️ **Repository Setup** - Automatic upstream/origin configuration for fork workflow
 - 📁 **Project Management** - Create, clone, and manage multiple Apps Script projects
 - 🛠️ **Smart Automation** - Automatic project structure creation and configuration
 - 🔐 **Service Account Auth** - Secure authentication using Google Cloud service accounts
@@ -72,6 +73,9 @@ This system replaces the deprecated `clasp` tool with a custom Node.js solution 
 🚀 Google Apps Script CLI - Demo
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
+│  $ make setup-repos https://github.com/username/ayva.git   │
+│  ✅ Repository setup completed!                            │
+│                                                             │
 │  $ make clone myproject                                     │
 │  ✅ Project cloned successfully                            │
 │                                                             │
@@ -92,6 +96,7 @@ This system replaces the deprecated `clasp` tool with a custom Node.js solution 
 ### ✨ **Key Features at a Glance**
 - 🚀 **Git-style Commands** - `clone`, `pull`, `push`, `status`
 - 🔄 **Automatic Updates** - Keep system up-to-date
+- 🏗️ **Repository Setup** - `setup-repos`, `test-repos` for fork workflow
 - 📁 **Smart Project Management** - Multiple projects, one interface
 - 🛠️ **TypeScript Powered** - Modern, type-safe development
 - 🔐 **Secure Authentication** - Service account integration

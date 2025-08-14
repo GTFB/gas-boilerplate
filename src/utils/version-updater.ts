@@ -149,8 +149,17 @@ export class VersionUpdater {
       const output = execSync('git remote -v', { encoding: 'utf8' });
       const lines = output.trim().split('\n');
       
+      // First check for upstream (preferred)
       for (const line of lines) {
-        if (line.includes('gas-boilerplate')) {
+        if (line.includes('upstream') && line.includes('gas-boilerplate')) {
+          const parts = line.split('\t');
+          return { hasRemote: true, remoteUrl: parts[1] || null };
+        }
+      }
+      
+      // Fallback to origin if upstream not found
+      for (const line of lines) {
+        if (line.includes('origin') && line.includes('gas-boilerplate')) {
           const parts = line.split('\t');
           return { hasRemote: true, remoteUrl: parts[1] || null };
         }
@@ -170,9 +179,16 @@ export class VersionUpdater {
   private hasUpdates(): boolean {
     try {
       execSync('git status --porcelain', { encoding: 'utf8' });
-      const behindOutput = execSync('git rev-list --count HEAD..origin/main', { encoding: 'utf8' });
-      const behindCount = parseInt(behindOutput.trim());
       
+      // Try upstream first, then fallback to origin
+      let behindOutput: string;
+      try {
+        behindOutput = execSync('git rev-list --count HEAD..upstream/main', { encoding: 'utf8' });
+      } catch {
+        behindOutput = execSync('git rev-list --count HEAD..origin/main', { encoding: 'utf8' });
+      }
+      
+      const behindCount = parseInt(behindOutput.trim());
       return behindCount > 0;
     } catch {
       return false;
@@ -181,7 +197,14 @@ export class VersionUpdater {
 
   private getNewCommits(): string[] {
     try {
-      const output = execSync('git log --oneline HEAD..origin/main', { encoding: 'utf8' });
+      // Try upstream first, then fallback to origin
+      let output: string;
+      try {
+        output = execSync('git log --oneline HEAD..upstream/main', { encoding: 'utf8' });
+      } catch {
+        output = execSync('git log --oneline HEAD..origin/main', { encoding: 'utf8' });
+      }
+      
       return output.trim().split('\n').filter(line => line.trim());
     } catch {
       return [];
@@ -208,7 +231,12 @@ export class VersionUpdater {
     logger.info('PULL_CHANGES', 'Pulling latest changes...');
     
     try {
-      execSync('git pull origin main', { stdio: 'inherit' });
+      // Try upstream first, then fallback to origin
+      try {
+        execSync('git pull upstream main', { stdio: 'inherit' });
+      } catch {
+        execSync('git pull origin main', { stdio: 'inherit' });
+      }
     } catch (error) {
       // Try to resolve conflicts automatically
       logger.warn('PULL_CONFLICT', 'Pull failed, attempting to resolve conflicts...');
@@ -218,9 +246,14 @@ export class VersionUpdater {
 
   private resolveConflicts(): void {
     try {
-      // Reset to remote state
-      execSync('git reset --hard origin/main', { stdio: 'inherit' });
-      logger.info('CONFLICT_RESOLVED', 'Conflicts resolved by resetting to remote state');
+      // Reset to remote state (try upstream first, then origin)
+      try {
+        execSync('git reset --hard upstream/main', { stdio: 'inherit' });
+        logger.info('CONFLICT_RESOLVED', 'Conflicts resolved by resetting to upstream state');
+      } catch {
+        execSync('git reset --hard origin/main', { stdio: 'inherit' });
+        logger.info('CONFLICT_RESOLVED', 'Conflicts resolved by resetting to origin state');
+      }
     } catch (error) {
       throw new Error('Failed to resolve conflicts automatically. Please resolve manually.');
     }
