@@ -50,7 +50,7 @@ bump-version:
 # Release commands
 release: patch
 
-patch: bump-version
+patch:
 	@echo "Creating patch release..."
 	@echo "🔄 Auto-committing and pushing changes..."
 	@git add .
@@ -60,7 +60,7 @@ patch: bump-version
 	@echo "📦 Creating release package..."
 	npx ts-node src/scripts/create-release.ts patch
 
-minor: bump-version
+minor:
 	@echo "Creating minor release..."
 	@echo "🔄 Auto-committing and pushing changes..."
 	@git add .
@@ -70,7 +70,7 @@ minor: bump-version
 	@echo "📦 Creating release package..."
 	npx ts-node src/scripts/create-release.ts minor
 
-major: bump-version
+major:
 	@echo "Creating major release..."
 	@echo "🔄 Auto-committing and pushing changes..."
 	@git add .
@@ -80,7 +80,7 @@ major: bump-version
 	@echo "📦 Creating release package..."
 	npx ts-node src/scripts/create-release.ts major
 
-preview: bump-version
+preview:
 	@echo "Creating preview release..."
 	@echo "🔄 Auto-committing and pushing changes..."
 	@git add .

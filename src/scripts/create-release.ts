@@ -120,6 +120,9 @@ export class ReleaseCreator {
     console.log(`📝 Updated package.json to version ${newVersion}`);
     
     logger.info('PACKAGE_JSON_UPDATED', `Version updated to ${newVersion}`);
+    
+    // Also update README.md version badge
+    this.updateReadmeVersion(newVersion);
   }
 
   private updateChangelog(newVersion: string, type: ReleaseType): void {
@@ -179,6 +182,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         return '🔍 Preview Release';
       default:
         return '📦 Release';
+    }
+  }
+
+  private updateReadmeVersion(newVersion: string): void {
+    const readmePath = path.join(process.cwd(), 'README.md');
+    
+    if (!fs.existsSync(readmePath)) {
+      console.log('⚠️  README.md not found, skipping version update');
+      return;
+    }
+    
+    try {
+      const readme = fs.readFileSync(readmePath, 'utf8');
+      const updatedReadme = readme.replace(
+        /Version-\d+\.\d+\.\d+/g,
+        `Version-${newVersion}`
+      );
+      
+      fs.writeFileSync(readmePath, updatedReadme);
+      console.log(`📝 Updated README.md version badge to ${newVersion}`);
+      logger.info('README_UPDATED', `README.md version badge updated to ${newVersion}`);
+    } catch (error) {
+      console.log('⚠️  Failed to update README.md version badge');
+      logger.warn('README_UPDATE_FAILED', `Failed to update README.md: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
