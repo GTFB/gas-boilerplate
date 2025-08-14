@@ -1,0 +1,29 @@
+# Force GitHub to recognize file types correctly
+*.ts linguist-language=TypeScript
+*.js linguist-language=JavaScript
+*.bat linguist-language=Batchfile
+*.md linguist-language=Markdown
+*.json linguist-language=JSON
+*.yml linguist-language=YAML
+*.yaml linguist-language=YAML
+
+# Exclude build files from language statistics
+dist/* linguist-vendored
+node_modules/* linguist-vendored
+*.js.map linguist-vendored
+*.d.ts.map linguist-vendored
+*.tsbuildinfo linguist-vendored
+
+# Force specific file types
+tsconfig.json linguist-language=JSON
+package.json linguist-language=JSON
+package-lock.json linguist-language=JSON
+
+# Normalize line endings
+*.js text eol=lf
+*.ts text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.bat text eol=crlf

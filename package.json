@@ -6,6 +6,17 @@
   "bin": {
     "gas-cli": "dist/clasp-clone.js"
   },
+  "files": [
+    "dist/**/*",
+    "templates/**/*",
+    "docs/**/*",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "start": "node dist/clasp-clone.js",
     "dev": "ts-node src/clasp-clone.ts",

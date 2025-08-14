@@ -1,4 +1,46 @@
-# Google Apps Script CLI - Setup Guide
+# 🚀 Google Apps Script CLI
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/Version-1.2.0-orange.svg)](CHANGELOG.md)
+[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/yourusername/gas-boilerplate/actions)
+
+> **Powerful command-line interface for managing Google Apps Script projects with Git-like workflow**
+
+<div align="center">
+  <img src="https://img.shields.io/badge/TypeScript-56.0%25-blue?style=for-the-badge&logo=typescript" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/JavaScript-34.0%25-yellow?style=for-the-badge&logo=javascript" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/Batch-10.0%25-black?style=for-the-badge&logo=windows" alt="Batch" />
+</div>
+
+---
+
+## 📊 **Project Statistics**
+
+<div align="center">
+  <a href="https://github.com/yourusername/gas-boilerplate">
+    <img src="https://img.shields.io/github/stars/yourusername/gas-boilerplate?style=social" alt="GitHub Stars" />
+  </a>
+  <a href="https://github.com/yourusername/gas-boilerplate/network">
+    <img src="https://img.shields.io/github/forks/yourusername/gas-boilerplate?style=social" alt="GitHub Forks" />
+  </a>
+  <a href="https://github.com/yourusername/gas-boilerplate/issues">
+    <img src="https://img.shields.io/github/issues/yourusername/gas-boilerplate" alt="GitHub Issues" />
+  </a>
+  <a href="https://github.com/yourusername/gas-boilerplate/pulls">
+    <img src="https://img.shields.io/github/issues-pr/yourusername/gas-boilerplate" alt="GitHub Pull Requests" />
+  </a>
+</div>
+
+<div align="center">
+  <img src="https://img.shields.io/github/languages/top/yourusername/gas-boilerplate" alt="Top Language" />
+  <img src="https://img.shields.io/github/languages/count/yourusername/gas-boilerplate" alt="Languages" />
+  <img src="https://img.shields.io/github/repo-size/yourusername/gas-boilerplate" alt="Repo Size" />
+  <img src="https://img.shields.io/github/last-commit/yourusername/gas-boilerplate" alt="Last Commit" />
+</div>
+
+---
 
 ## 📋 Project Description
 
@@ -21,6 +63,43 @@ This system replaces the deprecated `clasp` tool with a custom Node.js solution 
 - Manages multiple projects from a single interface
 - Automatically updates from a central boilerplate repository
 - Provides a consistent workflow across different computers
+
+## 🎯 **What You Get**
+
+<div align="center">
+
+```bash
+🚀 Google Apps Script CLI - Demo
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│  $ make clone myproject                                    │
+│  ✅ Project cloned successfully                            │
+│                                                             │
+│  $ make pull myproject                                     │
+│  📥 Downloaded latest changes from GAS                    │
+│                                                             │
+│  $ make push myproject                                     │
+│  📤 Uploaded changes to Google Apps Script                │
+│                                                             │
+│  $ make update                                             │
+│  🔄 Checking for system updates...                        │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+</div>
+
+### ✨ **Key Features at a Glance**
+- 🚀 **Git-style Commands** - `clone`, `pull`, `push`, `status`
+- 🔄 **Automatic Updates** - Keep system up-to-date
+- 📁 **Smart Project Management** - Multiple projects, one interface
+- 🛠️ **TypeScript Powered** - Modern, type-safe development
+- 🔐 **Secure Authentication** - Service account integration
+- 📊 **File Extraction** - HTML to JSON data processing
+- 📝 **Comprehensive Logging** - Track all operations
+- ✅ **Auto-Validation** - Configuration and system health checks
+
+---
 
 ## 🚀 Quick Start
 
