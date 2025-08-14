@@ -72,25 +72,25 @@ This system replaces the deprecated `clasp` tool with a custom Node.js solution 
 
 ```bash
 🚀 Google Apps Script CLI - Demo
-┌─────────────────────────────────────────────────────────────┐
-│                                                             │
-│  $ make setup-repos https://github.com/username/ayva.git   │
-│  ✅ Repository setup completed!                            │
-│                                                             │
-│  $ make clone PROJECT=myproject                            │
-│  ✅ Project cloned successfully                            │
-│                                                             │
-│  $ make pull PROJECT=myproject                             │
-│  📥 Downloaded latest changes from GAS                     │
-│                                                             │
-│  $ make push PROJECT=myproject                             │
-│  📤 Uploaded changes to Google Apps Script                 │
-│                                                             │
-│  $ make release                                             │
-│  🔄 Auto-committing and pushing changes...                 │
-│  ✅ Release committed and pushed!                          │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────┐
+│                                                                   │
+│  $ make setup-repos https://github.com/username/gas-project.git   │
+│    Repository setup completed!                                    │
+│                                                                   │
+│  $ make clone PROJECT=myproject                                   │
+│    Project cloned successfully                                    │
+│                                                                   │
+│  $ make pull PROJECT=myproject                                    │
+│    Downloaded latest changes from GAS                             │
+│                                                                   │
+│  $ make push PROJECT=myproject                                    │
+│    Uploaded changes to Google Apps Script                         │
+│                                                                   │
+│  $ make release                                                   │
+│    Auto-committing and pushing changes...                         │
+│    Release committed and pushed!                                  │
+│                                                                   │
+└───────────────────────────────────────────────────────────────────┘
 ```
 
 </div>
@@ -157,7 +157,7 @@ make upgrade             # Apply updates
 
 ### Step 2: Структура проекта
 ```
-ayva/                               ← Ваша папка проекта
+gas-project/                               ← Ваша папка проекта
 ├── system/                         ← gas-boilerplate (система)
 │   ├── key.json                    ← service account key
 │   ├── Makefile                    ← все команды
