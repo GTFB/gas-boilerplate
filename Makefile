@@ -40,7 +40,7 @@ help:
 	@echo "  make clone PROJECT=myproject"
 	@echo "  make pull PROJECT=analytics"
 	@echo "  make release"
-	@echo "  make setup-repos https://github.com/username/ayva.git"
+	@echo "  make setup-repos REPO_URL=https://github.com/username/ayva.git"
 
 # Release commands
 release: patch
@@ -88,7 +88,10 @@ preview:
 # Repository setup commands
 setup-repos:
 	@echo "Setting up repositories..."
-	npx ts-node src/scripts/setup-repos.ts setup
+	npx ts-node src/scripts/setup-repos.ts setup $(REPO_URL)
+
+%:
+	@:
 
 test-repos:
 	@echo "Testing repository connections..."
@@ -146,32 +149,34 @@ files:
 	npx ts-node src/functions/extract-files.ts $(PROJECT)
 
 new:
-	@if [ "$(PROJECT)" = "" ]; then \
-		echo "ERROR: Specify project name: make new PROJECT=name"; \
-		echo "Example: make new PROJECT=analytics"; \
-		exit 1; \
-	fi
+	@if "$(PROJECT)"=="" ( \
+		echo "ERROR: Specify project name: make new PROJECT=name" && \
+		echo "Example: make new PROJECT=analytics" && \
+		exit /b 1 \
+	)
 	@echo "Creating new project: $(PROJECT)"
-	@if [ -d "../$(PROJECT)" ]; then \
-		echo "ERROR: Project $(PROJECT) already exists!"; \
-		exit 1; \
-	fi
+	@if exist "..\$(PROJECT)" ( \
+		echo "ERROR: Project $(PROJECT) already exists!" && \
+		exit /b 1 \
+	)
 	@echo "Creating folder structure..."
-	@mkdir -p "../$(PROJECT)/system" "../$(PROJECT)/files"
+	@if not exist "..\$(PROJECT)" mkdir "..\$(PROJECT)"
+	@if not exist "..\$(PROJECT)\system" mkdir "..\$(PROJECT)\system"
+	@if not exist "..\$(PROJECT)\files" mkdir "..\$(PROJECT)\files"
 	@echo "Copying service account..."
-	@if [ -f "key.json" ]; then \
-		cp "key.json" "../$(PROJECT)/system/"; \
-		echo "✅ Service account copied"; \
-	else \
-		echo "⚠️  key.json not found (copy manually if needed)"; \
-	fi
+	@if exist "key.json" ( \
+		copy "key.json" "..\$(PROJECT)\system\" && \
+		echo "✅ Service account copied" \
+	) else ( \
+		echo "⚠️  key.json not found (copy manually if needed)" \
+	)
 	@echo "Copying project templates..."
-	@if [ -f "templates/appsscript.json" ]; then \
-		cp "templates/appsscript.json" "../$(PROJECT)/system/"; \
-		echo "✅ Project template copied"; \
-	else \
-		echo "⚠️  appsscript.json template not found (copy manually if needed)"; \
-	fi
+	@if exist "templates\appsscript.json" ( \
+		copy "templates\appsscript.json" "..\$(PROJECT)\system\" && \
+		echo "✅ Project template copied" \
+	) else ( \
+		echo "⚠️  appsscript.json template not found (copy manually if needed)" \
+	)
 	@echo "SUCCESS: Project $(PROJECT) created!"
 	@echo ""
 	@echo "Project structure:"
@@ -226,11 +231,12 @@ validate:
 
 logs:
 	@echo "Showing recent logs..."
-	@if [ -f "logs/$$(date +%Y-%m-%d).md" ]; then \
-		cat "logs/$$(date +%Y-%m-%d).md"; \
-	else \
-		echo "No logs found for today"; \
-	fi
+	@for /f "tokens=1-3 delims=/" %%a in ('date /t') do set today=%%a
+	@if exist "logs\%%today%%.md" ( \
+		type "logs\%%today%%.md" \
+	) else ( \
+		echo "No logs found for today" \
+	)
 
 config:
 	@echo "System configuration:"

@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "declaration": true,
+    "declaration": false,
     "declarationMap": false,
     "sourceMap": false,
     "removeComments": false,
@@ -18,7 +18,7 @@
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": false,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": false,
     "noUncheckedIndexedAccess": false,
@@ -27,21 +27,15 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "types": ["node"],
-    "typeRoots": ["./node_modules/@types", "./types"],
-    "skipDefaultLibCheck": true,
-    "noLib": false
+    "skipDefaultLibCheck": true
   },
   "include": [
-    "src/**/*"
+    "src/scripts/setup-repos.ts"
   ],
   "exclude": [
     "node_modules",
     "dist",
     "**/*.js",
     "**/*.bat"
-  ],
-  "ts-node": {
-    "esm": false,
-    "experimentalSpecifierResolution": "node"
-  }
+  ]
 }

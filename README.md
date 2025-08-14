@@ -42,7 +42,7 @@ cd system
 npm install
 
 # 4. Setup repositories (replace with your repo URL)
-make setup-repos https://github.com/your-username/your-repo.git
+make setup-repos REPO_URL=https://github.com/your-username/your-repo.git
 
 # 5. Test setup
 make test-repos
@@ -92,7 +92,7 @@ make preview                # Create preview release
 
 ### Repository Setup
 ```bash
-make setup-repos [url]      # Setup upstream/origin repositories
+make setup-repos REPO_URL=url  # Setup upstream/origin repositories
 make test-repos             # Test repository connections
 ```
 
