@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.2] - 2025-08-14
+
+### 🐛 Patch Release
+- Automated release v1.2.2
+- All tests passed
+- Configuration validated
+
+### Changed
+- Version bumped to 1.2.2
+
+---
+
+
+
 ## [1.2.1] - 2025-08-14
 
 ### 🐛 Patch Release
