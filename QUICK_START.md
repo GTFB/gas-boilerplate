@@ -1,121 +1,121 @@
-# 🚀 Быстрый старт - Пошаговое руководство
+# 🚀 Quick Start - Step-by-Step Guide
 
-## 📋 Что нужно сделать по порядку
+## 📋 What to do in order
 
-### 1️⃣ **Создайте папку для вашего проекта**
+### 1️⃣ **Create a folder for your project**
 ```bash
-# Создайте папку ayva (или любое другое название)
+# Create a folder ayva (or any other name)
 mkdir ayva
 cd ayva
 ```
 
-### 2️⃣ **Клонируйте gas-boilerplate**
+### 2️⃣ **Clone gas-boilerplate**
 ```bash
-# Клонируйте в папку system
+# Clone into system folder
 git clone https://github.com/username/gas-boilerplate.git system
 cd system
 ```
 
-### 3️⃣ **Установите зависимости**
+### 3️⃣ **Install dependencies**
 ```bash
-# Установите Node.js пакеты
+# Install Node.js packages
 npm install
 ```
 
-### 4️⃣ **Создайте репозиторий на GitHub**
-- Идите на [GitHub.com](https://github.com)
-- Создайте новый репозиторий (например, `ayva`)
-- **НЕ** инициализируйте с README, .gitignore или лицензией
-- Скопируйте URL репозитория
+### 4️⃣ **Create a repository on GitHub**
+- Go to [GitHub.com](https://github.com)
+- Create a new repository (for example, `ayva`)
+- **DO NOT** initialize with README, .gitignore, or license
+- Copy the repository URL
 
-### 5️⃣ **Настройте репозитории**
+### 5️⃣ **Setup repositories**
 ```bash
-# Вставьте ваш URL репозитория
+# Insert your repository URL
 make setup-repos https://github.com/your-username/ayva.git
 ```
 
-### 6️⃣ **Проверьте настройку**
+### 6️⃣ **Test the setup**
 ```bash
-# Убедитесь, что все работает
+# Make sure everything works
 make test-repos
 ```
 
-### 7️⃣ **Создайте первый проект**
+### 7️⃣ **Create your first project**
 ```bash
-# Создайте проект myproject
+# Create project myproject
 make new PROJECT=myproject
 ```
 
-## ✅ Что произойдет автоматически
+## ✅ What happens automatically
 
-- ✅ **origin** переименуется в **upstream** (для gas-boilerplate)
-- ✅ **origin** настроится на ваш репозиторий ayva
-- ✅ Система проверит все подключения
-- ✅ Создастся структура папок для проекта
+- ✅ **origin** will be renamed to **upstream** (for gas-boilerplate)
+- ✅ **origin** will be set to your ayva repository
+- ✅ System will check all connections
+- ✅ Project folder structure will be created
 
-## 🔄 После настройки
+## 🔄 After setup
 
-### Получение обновлений от gas-boilerplate
+### Getting updates from gas-boilerplate
 ```bash
-make update    # проверить обновления
-make upgrade   # применить обновления
+make update    # check for updates
+make upgrade   # apply updates
 ```
 
-### Отправка изменений в ayva
+### Sending changes to ayva
 ```bash
 git add .
 git commit -m "Your changes"
 git push origin main
 ```
 
-### Создание релиза
+### Creating a release
 ```bash
-make release   # автоматически коммитит и пушит!
+make release   # automatically commits and pushes!
 ```
 
-## 🆘 Если что-то пошло не так
+## 🆘 If something goes wrong
 
 ```bash
-# Проверить текущие настройки
+# Check current settings
 git remote -v
 
-# Проверить логи
+# Check logs
 make logs
 
-# Проверить конфигурацию
+# Check configuration
 make config
 ```
 
-## 📚 Все команды
+## 📚 All commands
 
 ```bash
-make help              # показать все команды
-make new PROJECT=name  # создать новый проект
-make release           # создать релиз (авто-коммит + пуш)
-make setup-repos [url] # настроить репозитории
-make test-repos        # проверить подключения
+make help              # show all commands
+make new PROJECT=name  # create new project
+make release           # create release (auto-commit + push)
+make setup-repos [url] # setup repositories
+make test-repos        # test connections
 ```
 
-## 🎯 Итоговая структура
+## 🎯 Final structure
 
 ```
-ayva/                          # Ваша папка проекта
-├── system/                    # gas-boilerplate (система)
-│   ├── Makefile              # Все команды
-│   ├── src/                  # Исходный код
-│   └── docs/                 # Документация
-└── myproject/                # Ваш проект
-    ├── system/               # Системные файлы
-    └── files/                # Файлы проекта
+ayva/                          # Your project folder
+├── system/                    # gas-boilerplate (system)
+│   ├── Makefile              # All commands
+│   ├── src/                  # Source code
+│   └── docs/                 # Documentation
+└── myproject/                # Your project
+    ├── system/               # System files
+    └── files/                # Project files
 ```
 
-## 💡 Полезные советы
+## 💡 Useful tips
 
-1. **Всегда работайте из папки `system`** для выполнения команд
-2. **Используйте `make help`** для просмотра всех доступных команд
-3. **`make release`** автоматически делает git add, commit и push
-4. **Проверяйте логи** если что-то не работает: `make logs`
+1. **Always work from the `system` folder** to execute commands
+2. **Use `make help`** to view all available commands
+3. **`make release`** automatically does git add, commit and push
+4. **Check logs** if something doesn't work: `make logs`
 
-## 📖 Подробная документация
+## 📖 Detailed documentation
 
-Смотрите `docs/repository-setup.md` для детального описания всех возможностей.
+See `docs/repository-setup.md` for detailed description of all capabilities.

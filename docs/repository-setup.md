@@ -1,170 +1,170 @@
 # Repository Setup Guide
 
-Этот документ описывает, как автоматически настроить репозитории для работы с gas-boilerplate.
+This document describes how to automatically configure repositories for working with gas-boilerplate.
 
-## 🚀 Пошаговое руководство
+## 🚀 Step-by-Step Guide
 
-### Шаг 1: Создание папки для вашего проекта
+### Step 1: Create a folder for your project
 ```bash
-# Создайте папку для вашего проекта (например, ayva)
+# Create a folder for your project (for example, ayva)
 mkdir ayva
 cd ayva
 ```
 
-### Шаг 2: Клонирование gas-boilerplate
+### Step 2: Clone gas-boilerplate
 ```bash
-# Клонируйте gas-boilerplate в папку system
+# Clone gas-boilerplate into system folder
 git clone https://github.com/username/gas-boilerplate.git system
 cd system
 ```
 
-### Шаг 3: Установка зависимостей
+### Step 3: Install dependencies
 ```bash
-# Установите Node.js зависимости
+# Install Node.js dependencies
 npm install
 ```
 
-### Шаг 4: Настройка репозиториев
+### Step 4: Setup repositories
 ```bash
-# Если у вас уже есть репозиторий ayva на GitHub
+# If you already have an ayva repository on GitHub
 make setup-repos https://github.com/your-username/ayva.git
 
-# Если репозитория ayva еще нет
+# If the ayva repository doesn't exist yet
 make setup-repos
 ```
 
-### Шаг 5: Проверка подключения
+### Step 5: Test connection
 ```bash
-# Проверьте, что все настроено правильно
+# Verify that everything is configured correctly
 make test-repos
 ```
 
-## Проблема
+## The Problem
 
-По умолчанию ваш проект настроен так, что `origin` указывает на `gas-boilerplate`. Это означает, что:
-- `git push` отправляет изменения в gas-boilerplate (что не нужно)
-- `git pull` получает обновления от gas-boilerplate (это нужно)
+By default, your project is configured so that `origin` points to `gas-boilerplate`. This means:
+- `git push` sends changes to gas-boilerplate (which is not needed)
+- `git pull` receives updates from gas-boilerplate (which is needed)
 
-## Решение
+## Solution
 
-Настроить два репозитория:
-- **upstream** → gas-boilerplate (для получения обновлений)
-- **origin** → ayva (ваш репозиторий для push)
+Configure two repositories:
+- **upstream** → gas-boilerplate (for receiving updates)
+- **origin** → ayva (your repository for push)
 
-## Автоматическая настройка
+## Automatic Setup
 
-### 1. Настройка репозиториев
+### 1. Repository Setup
 
 ```bash
-# Если у вас уже есть репозиторий ayva на GitHub
+# If you already have an ayva repository on GitHub
 make setup-repos https://github.com/your-username/ayva.git
 
-# Если репозитория ayva еще нет
+# If the ayva repository doesn't exist yet
 make setup-repos
 ```
 
-### 2. Проверка подключения
+### 2. Connection Test
 
 ```bash
 make test-repos
 ```
 
-### 3. Ручная настройка (если автоматическая не сработала)
+### 3. Manual Setup (if automatic doesn't work)
 
 ```bash
-# Переименовать origin в upstream
+# Rename origin to upstream
 git remote rename origin upstream
 
-# Добавить новый origin для ayva
+# Add new origin for ayva
 git remote add origin https://github.com/your-username/ayva.git
 
-# Проверить настройку
+# Check configuration
 git remote -v
 ```
 
-## Использование после настройки
+## Usage After Setup
 
-### Получение обновлений от gas-boilerplate
+### Receiving updates from gas-boilerplate
 
 ```bash
-# Проверить наличие обновлений
+# Check for available updates
 make update
 
-# Применить обновления
+# Apply updates
 make upgrade
 
-# Или вручную
+# Or manually
 git pull upstream main
 ```
 
-### Отправка изменений в ayva
+### Sending changes to ayva
 
 ```bash
-# Добавить изменения
+# Add changes
 git add .
 
-# Сделать коммит
+# Make commit
 git commit -m "Your commit message"
 
-# Отправить в ayva
+# Send to ayva
 git push origin main
 ```
 
-## Команды
+## Commands
 
-| Команда | Описание |
-|---------|----------|
-| `make new PROJECT=name` | Создать новый проект (с шаблонами) |
-| `make setup-repos [url]` | Настроить репозитории |
-| `make test-repos` | Проверить подключения |
-| `make update` | Проверить обновления |
-| `make upgrade` | Применить обновления |
-| `make release` | Создать релиз (автоматически коммитит и пушит) |
-| `make help` | Показать все доступные команды |
+| Command | Description |
+|---------|-------------|
+| `make new PROJECT=name` | Create new project (with templates) |
+| `make setup-repos [url]` | Setup repositories |
+| `make test-repos` | Test connections |
+| `make update` | Check for updates |
+| `make upgrade` | Apply updates |
+| `make release` | Create release (automatically commits and pushes) |
+| `make help` | Show all available commands |
 
-## Структура репозиториев
+## Repository Structure
 
 ```
 upstream (gas-boilerplate)
-    ↓ (получение обновлений)
+    ↓ (receiving updates)
 your local repository
-    ↓ (отправка изменений)
+    ↓ (sending changes)
 origin (ayva)
 ```
 
-## Устранение неполадок
+## Troubleshooting
 
-### Ошибка "upstream not configured"
+### Error "upstream not configured"
 
 ```bash
-# Добавить upstream вручную
+# Add upstream manually
 git remote add upstream https://github.com/username/gas-boilerplate.git
 ```
 
-### Ошибка "origin not configured"
+### Error "origin not configured"
 
 ```bash
-# Добавить origin для ayva
+# Add origin for ayva
 git remote add origin https://github.com/your-username/ayva.git
 ```
 
-### Проверка текущих настроек
+### Check current settings
 
 ```bash
 git remote -v
 ```
 
-## Логи
+## Logs
 
-Все операции логируются в папку `logs/`. Проверьте логи для диагностики проблем:
+All operations are logged in the `logs/` folder. Check logs for problem diagnosis:
 
 ```bash
 make logs
 ```
 
-## Поддержка
+## Support
 
-Если у вас возникли проблемы:
-1. Проверьте логи: `make logs`
-2. Проверьте подключения: `make test-repos`
-3. Проверьте конфигурацию: `make config`
+If you encounter problems:
+1. Check logs: `make logs`
+2. Check connections: `make test-repos`
+3. Check configuration: `make config`
