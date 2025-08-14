@@ -6,15 +6,13 @@ import { execSync } from 'child_process';
 
 class ReleaseCreator {
   async createRelease(): Promise<void> {
-    console.log('🚀 Creating release...');
-    
     const releaseType = await this.selectReleaseType();
     const version = await this.bumpVersion(releaseType);
     
     console.log(`\n📦 Creating ${releaseType} release: v${version}`);
     
     try {
-      this.commitChanges(version);
+      await this.commitChanges(version);
       this.createTag(version);
       this.pushChanges();
       
@@ -36,9 +34,26 @@ class ReleaseCreator {
     console.log('  2 = Minor (new features)');
     console.log('  3 = Patch (bug fixes)');
     
-    // For now, default to patch
-    console.log('\n💡 Defaulting to patch release');
-    return 'patch';
+    const readline = require('readline');
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+    
+    return new Promise((resolve) => {
+      rl.question('\n💡 Select release type (1-3, default: 3): ', (answer: string) => {
+        rl.close();
+        
+        const choice = answer.trim();
+        if (choice === '1') {
+          resolve('major');
+        } else if (choice === '2') {
+          resolve('minor');
+        } else {
+          resolve('patch');
+        }
+      });
+    });
   }
 
   private async bumpVersion(releaseType: string): Promise<string> {
@@ -70,10 +85,24 @@ class ReleaseCreator {
     return newVersion;
   }
 
-  private commitChanges(version: string): void {
+  private async commitChanges(version: string): Promise<void> {
     try {
+      const readline = require('readline');
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+      });
+      
+      const commitMessage = await new Promise<string>((resolve) => {
+        rl.question(`\n💬 Enter commit message (default: "Release v${version}"): `, (answer: string) => {
+          rl.close();
+          const message = answer.trim() || `Release v${version}`;
+          resolve(message);
+        });
+      });
+      
       execSync('git add .', { stdio: 'inherit' });
-      execSync(`git commit -m "Release v${version}"`, { stdio: 'inherit' });
+      execSync(`git commit -m '${commitMessage}'`, { stdio: 'inherit' });
       console.log('✅ Changes committed');
     } catch (error) {
       throw new Error('Failed to commit changes');
