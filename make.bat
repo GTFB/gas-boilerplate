@@ -11,8 +11,11 @@ if "%1"=="" (
   echo   make myproject   - create myproject
   echo   make analytics   - create analytics project
   echo   make dashboard   - create dashboard project
+  echo   make release     - create release
   goto end
 )
+
+if "%1"=="release" goto release
 
 set PROJECT_NAME=%1
 set PROJECT_PATH=..\%PROJECT_NAME%
@@ -64,6 +67,21 @@ echo    make pull             - download
 echo    make push             - upload
 echo    make status           - status
 echo    make projects         - project list
+
+:release
+echo.
+echo Release Creator - Create new project releases
+echo.
+
+if "%2"=="" (
+  echo Creating patch release...
+  ts-node src\scripts\create-release.ts patch
+) else (
+  echo Creating %2 release...
+  ts-node src\scripts\create-release.ts %2
+)
+
+goto end
 
 :end
 echo.
