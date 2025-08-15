@@ -227,7 +227,27 @@ class GAS {
     if (repoUrl) {
       await this.setupOrigin(repoUrl, projectName);
     } else {
-      await this.createProjectRepository(projectName);
+      // Check if origin already exists
+      try {
+        const output = execSync('git remote -v', { encoding: 'utf8' });
+        const remotes = output.trim().split('\n').filter(line => line.trim());
+        
+        let hasOrigin = false;
+        for (const line of remotes) {
+          if (line.includes('origin')) {
+            hasOrigin = true;
+            break;
+          }
+        }
+        
+        if (hasOrigin) {
+          console.log('✅ Origin remote already configured');
+        } else {
+          await this.createProjectRepository(projectName);
+        }
+      } catch {
+        await this.createProjectRepository(projectName);
+      }
     }
 
     console.log('✅ Repository setup completed!');
