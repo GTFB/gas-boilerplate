@@ -90,13 +90,13 @@ test-repos:
 
 # Project management commands
 clone:
-	@echo "Cloning project: $(name)"
-	@if exist "..\$(name)" ( \
-		echo "ERROR: Project $(name) already exists!" && \
+	@echo "Cloning project: $(or $(name),$(PROJECT))"
+	@if exist "..\$(or $(name),$(PROJECT))" ( \
+		echo "ERROR: Project $(or $(name),$(PROJECT)) already exists!" && \
 		exit /b 1 \
 	)
 	@echo "Creating project structure and adding to configuration..."
-	npx ts-node src/gas.ts clone $(name)
+	npx ts-node src/gas.ts clone $(or $(name),$(PROJECT))
 
 clone-%:
 	@echo "Cloning project: $*"
@@ -108,23 +108,23 @@ clone-%:
 	npx ts-node src/gas.ts clone $*
 
 pull:
-	@echo "Downloading changes for project: $(name)"
-	npx ts-node src/gas.ts pull $(name)
+	@echo "Downloading changes for project: $(or $(name),$(PROJECT))"
+	npx ts-node src/gas.ts pull $(or $(name),$(PROJECT))
 
 pull-%:
 	@echo "Downloading changes for project: $*"
 	npx ts-node src/gas.ts pull $*
 
 push:
-	@echo "Uploading changes for project: $(name)"
-	npx ts-node src/gas.ts push $(name)
+	@echo "Uploading changes for project: $(or $(name),$(PROJECT))"
+	npx ts-node src/gas.ts push $(or $(name),$(PROJECT))
 
 push-%:
 	@echo "Uploading changes for project: $*"
 	npx ts-node src/gas.ts push $*
 
 status:
-	@echo "Project status for: $(name)"
+	@echo "Project status for: $(or $(name),$(PROJECT))"
 	npx ts-node src/gas.ts list
 
 status-%:
@@ -132,40 +132,39 @@ status-%:
 	npx ts-node src/gas.ts list
 
 files:
-	@echo "Extracting files from project: $(name)"
-	npx ts-node src/gas.ts files $(name)
+	@echo "Extracting files from project: $(or $(name),$(PROJECT))"
+	npx ts-node src/gas.ts files $(or $(name),$(PROJECT))
 
 files-%:
 	@echo "Extracting files from project: $*"
 	npx ts-node src/gas.ts files $*
 
 new:
-	@echo "Creating new project: $(name)"
-	@node -e "const fs = require('fs'); const path = require('path'); const projectPath = path.resolve('../$(name)'); if (fs.existsSync(projectPath)) { console.log('ERROR: Project $(name) already exists!'); process.exit(1); }"
-	@echo "Creating new project: $(name)"
-	@node -e "const fs = require('fs'); const path = require('path'); const projectPath = path.resolve('../$(name)'); if (fs.existsSync(projectPath)) { console.log('ERROR: Project $(name) already exists!'); process.exit(1); }"
+	@node -e "const name = '$(name)'; const project = '$(PROJECT)'; if (!name && !project) { console.log('ERROR: Project name required. Use: make new name=projectname'); console.log('   or: make new PROJECT=projectname'); process.exit(1); }"
+	@echo "Creating new project: $(or $(name),$(PROJECT))"
+	@node -e "const fs = require('fs'); const path = require('path'); const projectName = '$(or $(name),$(PROJECT))'; if (!projectName) { console.log('ERROR: Project name required: make new name=projectname'); process.exit(1); } const projectPath = path.resolve('../' + projectName); if (fs.existsSync(projectPath)) { console.log('ERROR: Project ' + projectName + ' already exists!'); process.exit(1); }"
 	@echo "Creating folder structure..."
-	@node -e "const fs = require('fs'); const path = require('path'); const projectPath = path.resolve('../$(name)'); fs.mkdirSync(projectPath, { recursive: true }); fs.mkdirSync(path.join(projectPath, 'system'), { recursive: true }); fs.mkdirSync(path.join(projectPath, 'files'), { recursive: true });"
+	@node -e "const fs = require('fs'); const path = require('path'); const projectName = '$(or $(name),$(PROJECT))'; const projectPath = path.resolve('../' + projectName); fs.mkdirSync(projectPath, { recursive: true }); fs.mkdirSync(path.join(projectPath, 'system'), { recursive: true }); fs.mkdirSync(path.join(projectPath, 'files'), { recursive: true });"
 	@echo "Copying service account..."
-	@node -e "const fs = require('fs'); const path = require('path'); const keyPath = path.resolve('key.json'); const targetPath = path.resolve('../$(name)/system/key.json'); if (fs.existsSync(keyPath)) { fs.copyFileSync(keyPath, targetPath); console.log('✅ Service account copied'); } else { console.log('⚠️  key.json not found (copy manually if needed)'); }"
+	@node -e "const fs = require('fs'); const path = require('path'); const projectName = '$(or $(name),$(PROJECT))'; const keyPath = path.resolve('key.json'); const targetPath = path.resolve('../' + projectName + '/system/key.json'); if (fs.existsSync(keyPath)) { fs.copyFileSync(keyPath, targetPath); console.log('✅ Service account copied'); } else { console.log('⚠️  key.json not found (copy manually if needed)'); }"
 	@echo "Copying project templates..."
-	@node -e "const fs = require('fs'); const path = require('path'); const templatePath = path.resolve('templates/appsscript.json'); const targetPath = path.resolve('../$(name)/system/appsscript.json'); if (fs.existsSync(templatePath)) { fs.copyFileSync(templatePath, targetPath); console.log('✅ Project template copied'); } else { console.log('⚠️  appsscript.json template not found (copy manually if needed)'); }"
-	@echo "SUCCESS: Project $(name) created!"
+	@node -e "const fs = require('fs'); const path = require('path'); const projectName = '$(or $(name),$(PROJECT))'; const templatePath = path.resolve('templates/appsscript.json'); const targetPath = path.resolve('../' + projectName + '/system/appsscript.json'); if (fs.existsSync(templatePath)) { fs.copyFileSync(templatePath, targetPath); console.log('✅ Project template copied'); } else { console.log('⚠️  appsscript.json template not found (copy manually if needed)'); }"
+	@echo "SUCCESS: Project $(or $(name),$(PROJECT)) created!"
 	@echo ""
 	@echo "Project structure:"
-	@echo "  ../$(name)/"
+	@echo "  ../$(or $(name),$(PROJECT))/"
 	@echo "  ├── system/          - system files"
 	@echo "  └── files/           - project files"
 	@echo ""
 	@echo "Next steps:"
-	@echo "  1. cd ../$(name)"
+	@echo "  1. cd ../$(or $(name),$(PROJECT))"
 	@echo "  2. cd ../system"
-	@echo "  3. make clone $(name)  - clone project"
-	@echo "  4. cd ../$(name)"
+	@echo "  3. make clone $(or $(name),$(PROJECT))  - clone project"
+	@echo "  4. cd ../$(or $(name),$(PROJECT))"
 	@echo "  5. cd ../system"
-	@echo "  6. make pull $(name)   - download files"
+	@echo "  6. make pull $(or $(name),$(PROJECT))   - download files"
 	@echo "  7. Edit code"
-	@echo "  8. make push $(name)   - upload changes"
+	@echo "  8. make push $(or $(name),$(PROJECT))   - upload changes"
 	@echo ""
 	@echo "Use commands from system folder:"
 	@echo "  make help            - show all commands"

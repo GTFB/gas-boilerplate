@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.3.16] - 2025-01-27
+
+### 🐛 Bug Fixes
+- Fixed `make new` command not accepting project names properly
+- Added support for both `$(name)` and `$(PROJECT)` variables in Makefile
+- Fixed "Project name required" error when running `make new projectname`
+- Improved error messages for missing project names
+
+### 🔧 Makefile Improvements
+- Updated all project management commands to support both variable formats
+- Added proper validation for project names in `new`, `clone`, `pull`, `push`, `status`, and `files` commands
+- Fixed Node.js script execution in Windows environment
+
+---
+
 ## [1.3.4] - 2025-01-27
 
 ### 📚 Documentation Improvements
