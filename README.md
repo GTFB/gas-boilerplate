@@ -3,7 +3,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-1.3.9-orange.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.3.10-orange.svg)](CHANGELOG.md)
 
 > **Powerful command-line interface for managing Google Apps Script projects with Git-like workflow**
 
@@ -203,8 +203,8 @@ npm install
 ### 3. Use in your project:
 ```bash
 # From your project root
-make -C system new dashboard
-make -C system clone dashboard
+make -C system new project
+make -C system clone project
 ```
 
 ### 4. Project structure after setup:
