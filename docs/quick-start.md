@@ -3,7 +3,7 @@
 ## 📋 Prerequisites
 - [Node.js 18+](https://nodejs.org/) installed
 - Google Apps Script API enabled
-- Service account key file (`key.json`) - see **[🔐 Google Cloud Setup](docs/google-cloud-setup.md)**
+- Service account key file (`key.json`) - see **[🔐 Google Cloud Setup](google-cloud-setup.md)**
 
 ## 📋 What to do in order
 
@@ -35,8 +35,23 @@ npm install
 
 ### 5️⃣ **Setup repositories**
 ```bash
-# Insert your repository URL
-make setup-repos https://github.com/your-username/ayva.git
+# Setup repository remotes automatically
+make setup-repos
+```
+
+This command will:
+- Rename existing `origin` to `upstream` (pointing to gas-boilerplate)
+- Set `origin` to point to your project repository
+- Test all connections
+
+**Note:** If you get an error about origin already being configured, you may need to set it up manually:
+```bash
+# Check current remotes
+git remote -v
+
+# If needed, remove and re-add origin
+git remote remove origin
+make setup-repos
 ```
 
 ### 6️⃣ **Test the setup**
@@ -44,6 +59,10 @@ make setup-repos https://github.com/your-username/ayva.git
 # Make sure everything works
 make test-repos
 ```
+
+You should see:
+- ✅ Upstream (gas-boilerplate): OK
+- ✅ Origin (your-project): OK
 
 ### 7️⃣ **Create your first project**
 ```bash
@@ -98,8 +117,45 @@ git remote -v
 make logs
 
 # Check configuration
-make config
+make validate
 ```
+
+### Common Issues
+
+#### Repository setup problems
+```bash
+# If make setup-repos fails
+cd system
+git remote -v
+make test-repos
+
+# If origin is wrong, fix it manually
+git remote remove origin
+git remote add origin https://github.com/your-username/your-project.git
+```
+
+#### Module not found errors
+```bash
+# Make sure you're in the system folder
+cd system
+npm install
+make validate
+```
+
+#### Git submodule conflicts
+```bash
+# If you have local changes that conflict with updates
+cd system
+git reset --hard HEAD
+cd ..
+git submodule update --remote system
+```
+
+### Getting Help
+
+- 📚 **Detailed setup guide**: [submodule-setup.md](submodule-setup.md)
+- 🔧 **Troubleshooting**: [submodule-setup.md#troubleshooting](submodule-setup.md#troubleshooting)
+- 📋 **Command reference**: [../Makefile](../Makefile)
 
 ## 📚 All commands
 
@@ -133,5 +189,6 @@ ayva/                          # Your project folder
 
 ## 📖 Detailed documentation
 
-- **[📋 Projects Configuration](docs/projects-configuration.md)** - How to configure projects.json with SCRIPT_ID
-- **[📋 Repository Setup](docs/repository-setup.md)** - Detailed description of all capabilities
+- **[📋 Projects Configuration](projects-configuration.md)** - How to configure projects.json with SCRIPT_ID
+- **[📋 Repository Setup](submodule-setup.md)** - Detailed submodule setup and repository configuration
+- **[🔧 Troubleshooting](submodule-setup.md#troubleshooting)** - Common issues and solutions

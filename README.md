@@ -3,7 +3,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-1.3.13-orange.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.3.16-orange.svg)](CHANGELOG.md)
 
 > **Powerful command-line interface for managing Google Apps Script projects with Git-like workflow**
 
@@ -28,12 +28,17 @@ git submodule add https://github.com/GTFB/gas-boilerplate.git system
 cd system
 npm install
 
-# 3. Create project
+# 3. Setup repository remotes
+make setup-repos
+
+# 4. Create project
 make new projectname
 make clone projectname
 ```
 
 > **💡 All commands use `make` - see [Makefile](Makefile) for details**
+> **📚 For detailed submodule setup, see [docs/submodule-setup.md](docs/submodule-setup.md)**
+> **🎯 For practical examples, see [docs/repository-examples.md](docs/repository-examples.md)**
 
 ## Prerequisites
 
@@ -177,10 +182,15 @@ gas-boilerplate/
 ## 📚 Documentation
 
 - **[Main guide](README.md)** - Complete system overview (this file)
+- **[Documentation Index](docs/README.md)** - Complete documentation overview
+- **[Quick Start](docs/quick-start.md)** - Step-by-step setup guide
+- **[Submodule Setup](docs/submodule-setup.md)** - Detailed submodule configuration
+- **[Repository Examples](docs/repository-examples.md)** - Practical setup examples
 - **[Google Cloud Setup](docs/google-cloud-setup.md)** - How to get credentials
 - **[Troubleshooting](docs/troubleshooting.md)** - Common problems and solutions
+- **[Cursor Rules](docs/cursor-rules.md)** - Development guidelines and rules
 
-## 🔄 Working with Subrepository
+## 🔄 Working with Submodule
 
 This project is designed as a **git submodule** that you can add to your projects:
 
@@ -192,33 +202,45 @@ cd system
 npm install
 ```
 
-### 2. Update from upstream:
+### 2. Setup repository remotes:
+```bash
+cd system
+make setup-repos
+make test-repos
+```
+
+### 3. Update from upstream:
 ```bash
 # Get latest changes
-git submodule update --remote --merge
+git submodule update --remote system
 cd system
 npm install
+make upgrade
 ```
 
-### 3. Use in your project:
+### 4. Use in your project:
 ```bash
-# From your project root
-make -C system new projectname
-make -C system clone projectname
+# From system folder
+cd system
+make new PROJECT=projectname
+make clone PROJECT=projectname
 ```
 
-### 4. Project structure after setup:
+### 5. Project structure after setup:
 ```
 my-project/
 ├── system/                    # gas-boilerplate submodule
 │   ├── src/
 │   ├── Makefile
 │   └── package.json
-├── project/                   # your GAS project
+├── projectname/               # your GAS project
 │   ├── system/
 │   └── files/
 └── README.md
 ```
+
+> **💡 For detailed submodule setup, see [docs/submodule-setup.md](docs/submodule-setup.md)**
+> **📚 For complete documentation, see [docs/README.md](docs/README.md)**
 
 
 

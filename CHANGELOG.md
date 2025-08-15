@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.3.4] - 2025-01-27
+
+### 📚 Documentation Improvements
+- Enhanced `SUBMODULE_SETUP.md` with detailed repository configuration guide
+- Added comprehensive troubleshooting section for common repository issues
+- Updated `QUICK_START.md` with step-by-step repository setup instructions
+- Created new `REPOSITORY_EXAMPLES.md` with practical setup examples
+- Improved `README.md` with better submodule setup instructions
+- Added cross-references between documentation files
+
+### 🔧 Repository Setup Enhancements
+- Added detailed instructions for automatic and manual remote configuration
+- Included examples for fixing common repository setup issues
+- Added troubleshooting commands for repository connection problems
+- Documented the complete workflow for setting up gas-boilerplate as submodule
+
+### 📁 Documentation Reorganization
+- Moved detailed guides to `docs/` folder for better organization
+- Renamed files to use lowercase with hyphens (kebab-case)
+- Updated all internal links and cross-references
+- Created `docs/README.md` as documentation index
+- Added navigation links between all documentation files
+
+---
+
 ## [1.3.3] - 2025-08-14
 
 ### 🐛 Patch Release

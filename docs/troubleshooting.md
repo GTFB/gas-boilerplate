@@ -1,6 +1,15 @@
-# Troubleshooting
+# 🔧 Troubleshooting
 
-## Common Issues
+This document provides solutions for common issues when working with gas-boilerplate.
+
+## 📚 Related Documentation
+
+- **[Quick Start](quick-start.md)** - Step-by-step setup guide
+- **[Submodule Setup](submodule-setup.md)** - Detailed submodule configuration
+- **[Repository Examples](repository-examples.md)** - Practical setup examples
+- **[Main README](../README.md)** - Project overview and features
+
+## 🚨 Common Issues
 
 ### Project not found
 ```bash

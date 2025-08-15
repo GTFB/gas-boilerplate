@@ -3,6 +3,13 @@
 ## 🎯 Purpose
 This document defines the architectural rules and development patterns that AI assistants (like Cursor) must follow when working with this Google Apps Script CLI project.
 
+## 📚 Related Documentation
+
+- **[Quick Start](quick-start.md)** - Step-by-step setup guide
+- **[Submodule Setup](submodule-setup.md)** - Detailed submodule configuration
+- **[Repository Examples](repository-examples.md)** - Practical setup examples
+- **[Main README](../README.md)** - Project overview and features
+
 ## 🏗️ Architecture Overview
 
 ### Core Principles
