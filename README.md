@@ -3,7 +3,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-1.3.10-orange.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.3.11-orange.svg)](CHANGELOG.md)
 
 > **Powerful command-line interface for managing Google Apps Script projects with Git-like workflow**
 
@@ -29,8 +29,8 @@ cd system
 npm install
 
 # 3. Create project
-make new project
-make clone project
+make new projectname
+make clone projectname
 ```
 
 > **💡 All commands use `make` - see [Makefile](Makefile) for details**
@@ -38,8 +38,21 @@ make clone project
 ## Prerequisites
 
 1. **[Node.js 18+](https://nodejs.org/)** installed
-2. **Google Cloud project** with Apps Script API enabled
-3. **Service account key** (`key.json`) for authentication
+2. **[Make for Windows](https://chocolatey.org/packages/make)** - install via Chocolatey
+3. **Google Cloud project** with Apps Script API enabled
+4. **Service account key** (`key.json`) for authentication
+
+### Installing Make on Windows
+
+If you don't have Make installed, use Chocolatey:
+
+```bash
+# Install Chocolatey first (run in PowerShell as Administrator)
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+# Install Make
+choco install make
+```
 
 ## Setup
 
@@ -58,12 +71,15 @@ make clone project
 
 ## Commands
 
+> **📚 See [Makefile](Makefile) for complete command reference**
+
 ### Projects
 ```bash
 make new projectname    # create project folder structure
 make clone projectname  # add project to configuration
 make pull projectname   # download from Google Apps Script
 make push projectname   # upload to Google Apps Script
+make files projectname  # extract files from files.html
 make projects           # show configured projects
 make list               # list all projects
 ```
@@ -122,7 +138,7 @@ gas-boilerplate/
 
 1. **Create project:**
    ```bash
-   make new project
+   make new projectname
    ```
 
 2. **Get SCRIPT_ID:**
@@ -136,36 +152,20 @@ gas-boilerplate/
 
 4. **Setup project:**
    ```bash
-   make clone project
-   make pull project
+   make clone projectname
+   make pull projectname
    ```
 
 5. **Work with project:**
-   - Edit code in `../dashboard/files/`
+   - Edit code in `../projectname/files/`
    - Test in Google Apps Script editor
+   - Extract files if needed: `make files projectname`
 
 6. **Upload changes:**
    ```bash
-   make push project
+   make push projectname
    ```
 
-## Examples
-
-```bash
-# Create new project
-make new project
-
-# Edit projects.json - add SCRIPT_ID
-# Example: "project": { "id": "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms" }
-
-# Setup and download
-make clone project
-make pull project
-
-# Work on code...
-# Upload changes
-make push project
-```
 
 ## Troubleshooting
 
@@ -203,8 +203,8 @@ npm install
 ### 3. Use in your project:
 ```bash
 # From your project root
-make -C system new project
-make -C system clone project
+make -C system new projectname
+make -C system clone projectname
 ```
 
 ### 4. Project structure after setup:

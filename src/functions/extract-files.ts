@@ -1,7 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { logger } from '../utils/logger';
-import { ExtractedData } from '../types';
+
+interface ExtractedData {
+  title: string;
+  json: any;
+}
 
 export class FileExtractor {
   private projectPath: string;
@@ -16,7 +19,7 @@ export class FileExtractor {
 
   extractFiles(): ExtractedData[] {
     try {
-      logger.info('EXTRACT_START', `Starting extraction from ${this.htmlPath}`);
+      console.log(`🚀 Starting extraction from ${this.htmlPath}`);
       
       if (!fs.existsSync(this.htmlPath)) {
         throw new Error(`files.html not found at: ${this.htmlPath}`);
@@ -25,7 +28,7 @@ export class FileExtractor {
       // Create files directory if it doesn't exist
       if (!fs.existsSync(this.filesDir)) {
         fs.mkdirSync(this.filesDir, { recursive: true });
-        logger.info('DIR_CREATED', `Created files directory: ${this.filesDir}`);
+        console.log(`📁 Created files directory: ${this.filesDir}`);
       }
 
       const htmlContent = fs.readFileSync(this.htmlPath, 'utf8');
@@ -34,11 +37,11 @@ export class FileExtractor {
       // Save extracted data to files
       this.saveExtractedData(extractedData);
       
-      logger.info('EXTRACT_SUCCESS', `Extracted ${extractedData.length} files`);
+      console.log(`✅ Extracted ${extractedData.length} files`);
       return extractedData;
       
     } catch (error) {
-      logger.error('EXTRACT_ERROR', `Failed to extract files: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      console.error(`❌ Failed to extract files: ${error instanceof Error ? error.message : 'Unknown error'}`);
       throw error;
     }
   }
@@ -65,7 +68,7 @@ export class FileExtractor {
             json: jsonData
           });
           
-          logger.info('SCRIPT_PARSED', `Parsed script ${scriptIndex}: ${title}`);
+          console.log(`📝 Parsed script ${scriptIndex}: ${title}`);
           
         } catch (parseError) {
           // If not JSON, try to extract other data
@@ -158,9 +161,9 @@ export class FileExtractor {
       
       try {
         fs.writeFileSync(filePath, JSON.stringify(data.json, null, 2));
-        logger.info('FILE_SAVED', `Saved: ${fileName}.json`);
+        console.log(`💾 Saved: ${fileName}.json`);
       } catch (error) {
-        logger.error('FILE_SAVE_ERROR', `Failed to save ${fileName}.json: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console.error(`❌ Failed to save ${fileName}.json: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     }
   }
