@@ -81,8 +81,29 @@ class ReleaseCreator {
     packageJson.version = newVersion;
     fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2));
     
+    // Update version in README.md
+    await this.updateReadmeVersion(currentVersion, newVersion);
+    
     console.log(`📈 Version bumped: ${currentVersion} → ${newVersion}`);
     return newVersion;
+  }
+
+  private async updateReadmeVersion(oldVersion: string, newVersion: string): Promise<void> {
+    try {
+      const readmePath = path.resolve(process.cwd(), 'README.md');
+      if (fs.existsSync(readmePath)) {
+        let readmeContent = fs.readFileSync(readmePath, 'utf8');
+        
+        // Update version badge
+        const versionBadgeRegex = /\[!\[Version\]\(https:\/\/img\.shields\.io\/badge\/Version-([\d.]+)-orange\.svg\)\]\(CHANGELOG\.md\)/g;
+        readmeContent = readmeContent.replace(versionBadgeRegex, `[![Version](https://img.shields.io/badge/Version-${newVersion}-orange.svg)](CHANGELOG.md)`);
+        
+        fs.writeFileSync(readmePath, readmeContent);
+        console.log(`📝 Version updated in README.md: ${oldVersion} → ${newVersion}`);
+      }
+    } catch (error) {
+      console.log(`⚠️  Could not update README.md: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   }
 
   private async commitChanges(version: string): Promise<void> {
@@ -102,7 +123,7 @@ class ReleaseCreator {
       });
       
       execSync('git add .', { stdio: 'inherit' });
-      execSync(`git commit -m '${commitMessage}'`, { stdio: 'inherit' });
+      execSync(`git commit -m "${commitMessage}"`, { stdio: 'inherit' });
       console.log('✅ Changes committed');
     } catch (error) {
       throw new Error('Failed to commit changes');

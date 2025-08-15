@@ -477,12 +477,12 @@ async function main(): Promise<void> {
         console.log('  release           - create release');
         console.log('');
         console.log('Examples:');
-        console.log('  gas new leads');
-        console.log('  gas clone leads');
-        console.log('  gas pull leads');
-        console.log('  gas push leads');
-        console.log('  gas projects');
-        console.log('  gas config');
+        console.log('  make new leads');
+        console.log('  make clone leads');
+        console.log('  make pull leads');
+        console.log('  make push leads');
+        console.log('  make projects');
+        console.log('  make config');
         break;
     }
   } catch (error) {
