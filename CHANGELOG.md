@@ -1,8 +1,26 @@
 # Changelog
 
-## [1.4.0] - 2025-01-27
+## [1.4.2] - 2025-08-15
 
-### 🏷️ Enhanced Tag Creation
+### 🐛 Bug Fixes
+- **Fixed tag creation**: Added comprehensive logging and verification for git tag creation
+- **Fixed date handling**: Now automatically uses current system date instead of hardcoded dates
+- **Enhanced error handling**: Better error messages and fallback mechanisms for tag creation
+
+### 🔧 Technical Improvements
+- **Dynamic date generation**: Added `getCurrentDate()` method for automatic date handling
+- **Better logging**: Added detailed logging throughout the tag creation process
+- **Tag verification**: Added verification step to confirm tag was created successfully
+- **Content extraction**: Improved CHANGELOG.md parsing with better error handling
+
+### 📝 Date Handling
+- **CHANGELOG.md**: Now automatically uses current system date (YYYY-MM-DD format)
+- **Version updates**: Dates are dynamically generated when updating versions
+- **Consistent formatting**: All date formats now use ISO standard (YYYY-MM-DD)
+
+---
+
+## [1.4.0] - 2025-08-15
 - **Interactive tag creation**: Added question "Create git tag? (y/N)" with default "No"
 - **Smart tag descriptions**: Automatically extracts release description from CHANGELOG.md
 - **Rich tag messages**: Tags now include detailed changelog content instead of just "Release vX.X.X"
@@ -25,7 +43,7 @@ Tags now include:
 
 ---
 
-## [1.3.19] - 2025-01-27
+## [1.3.19] - 2025-08-14
 
 ### 🔧 Release System Improvements
 - **Fixed version bumping**: `make release` now updates versions in 3 places instead of 2
@@ -41,7 +59,7 @@ Now `make release` updates versions in:
 
 ---
 
-## [1.3.17] - 2025-01-27
+## [1.3.17] - 2025-08-13
 
 ### ✨ New Features
 - **Direct project name support**: `make new projectname` now works without `name=` or `PROJECT=`
@@ -56,11 +74,11 @@ Now `make release` updates versions in:
 
 ---
 
-## [1.3.16] - 2025-01-27
+## [1.3.16] - 2025-08-12
 
 ---
 
-## [1.3.4] - 2025-01-27
+## [1.3.4] - 2025-08-11
 
 ### 📚 Documentation Improvements
 - Enhanced `SUBMODULE_SETUP.md` with detailed repository configuration guide

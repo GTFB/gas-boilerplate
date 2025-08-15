@@ -125,23 +125,29 @@ class ReleaseCreator {
     }
   }
 
+  private getCurrentDate(): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const dateString = `${year}-${month}-${day}`;
+    console.log(`📅 Current date: ${dateString}`);
+    return dateString;
+  }
+
   private async updateChangelogVersion(oldVersion: string, newVersion: string): Promise<void> {
     try {
       const changelogPath = path.resolve(process.cwd(), 'CHANGELOG.md');
       if (fs.existsSync(changelogPath)) {
         let changelogContent = fs.readFileSync(changelogPath, 'utf8');
         
-        // Update version in CHANGELOG.md header
-        const versionHeaderRegex = /^## \[([\d.]+)\] - /gm;
-        changelogContent = changelogContent.replace(versionHeaderRegex, (match, version) => {
-          if (version === oldVersion) {
-            return `## [${newVersion}] - `;
-          }
-          return match;
-        });
+        // Update version in CHANGELOG.md header with current date
+        const currentDate = this.getCurrentDate();
+        const versionHeaderRegex = new RegExp(`^## \\[${oldVersion}\\] - [^\\n]+`, 'gm');
+        changelogContent = changelogContent.replace(versionHeaderRegex, `## [${newVersion}] - ${currentDate}`);
         
         fs.writeFileSync(changelogPath, changelogContent);
-        console.log(`📝 Version updated in CHANGELOG.md: ${oldVersion} → ${newVersion}`);
+        console.log(`📝 Version updated in CHANGELOG.md: ${oldVersion} → ${newVersion} (${currentDate})`);
       }
     } catch (error) {
       console.log(`⚠️  Could not update CHANGELOG.md: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -159,19 +165,34 @@ class ReleaseCreator {
       rl.question(`\n🏷️  Create git tag for v${version}? (y/N, default: N): `, (answer: string) => {
         rl.close();
         const choice = answer.trim().toLowerCase();
-        resolve(choice === 'y' || choice === 'yes');
+        const shouldCreate = choice === 'y' || choice === 'yes';
+        console.log(`💡 User choice: ${shouldCreate ? 'YES - will create tag' : 'NO - skipping tag creation'}`);
+        resolve(shouldCreate);
       });
     });
   }
 
   private async createTagWithDescription(version: string): Promise<void> {
     try {
+      console.log('🏷️  Creating git tag...');
+      
       // Get description from CHANGELOG.md
       const tagMessage = await this.getTagMessageFromChangelog(version);
+      console.log(`📝 Tag message length: ${tagMessage.length} characters`);
       
+      // Create the tag
       execSync(`git tag -a v${version} -m "${tagMessage}"`, { stdio: 'inherit' });
       console.log('✅ Tag created with description from CHANGELOG.md');
+      
+      // Verify tag was created
+      try {
+        execSync(`git tag -l v${version}`, { stdio: 'pipe' });
+        console.log(`🔍 Tag verification: v${version} found in git tags`);
+      } catch (verifyError) {
+        console.log(`⚠️  Tag verification failed: ${verifyError instanceof Error ? verifyError.message : 'Unknown error'}`);
+      }
     } catch (error) {
+      console.error(`❌ Failed to create tag: ${error instanceof Error ? error.message : 'Unknown error'}`);
       throw new Error('Failed to create tag');
     }
   }
@@ -182,11 +203,15 @@ class ReleaseCreator {
       if (fs.existsSync(changelogPath)) {
         const changelogContent = fs.readFileSync(changelogPath, 'utf8');
         
+        console.log(`🔍 Looking for version ${version} in CHANGELOG.md...`);
+        
         // Find the section for this version
         const versionSectionRegex = new RegExp(`## \\[${version}\\] - [^\\n]+\\n([\\s\\S]*?)(?=## \\[|$)`, 'g');
         const match = versionSectionRegex.exec(changelogContent);
         
         if (match && match[1]) {
+          console.log(`✅ Found version ${version} in CHANGELOG.md`);
+          
           // Extract the content and clean it up
           let content = match[1].trim();
           
@@ -205,19 +230,29 @@ class ReleaseCreator {
             .replace(/\n\s*\n/g, '\n') // Remove extra blank lines
             .trim();
           
+          console.log(`📝 Extracted content length: ${content.length} characters`);
+          
           // Limit length to avoid git tag message issues
           if (content.length > 500) {
             content = content.substring(0, 500) + '...';
+            console.log(`📏 Content truncated to 500 characters`);
           }
           
-          return `Release v${version}\n\n${content}`;
+          const tagMessage = `Release v${version}\n\n${content}`;
+          console.log(`🏷️  Final tag message length: ${tagMessage.length} characters`);
+          
+          return tagMessage;
+        } else {
+          console.log(`⚠️  Version ${version} not found in CHANGELOG.md, using fallback message`);
         }
+      } else {
+        console.log(`⚠️  CHANGELOG.md not found, using fallback message`);
       }
       
       // Fallback to simple message
       return `Release v${version}`;
     } catch (error) {
-      console.log(`⚠️  Could not read CHANGELOG.md, using default tag message`);
+      console.log(`⚠️  Could not read CHANGELOG.md: ${error instanceof Error ? error.message : 'Unknown error'}`);
       return `Release v${version}`;
     }
   }
