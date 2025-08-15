@@ -79,14 +79,14 @@ preview:
 # Repository setup commands
 setup-repos:
 	@echo "Setting up repositories..."
-	npx ts-node src/scripts/setup-repos.ts setup $(REPO_URL)
+	npx ts-node src/gas.ts setup-repos $(REPO_URL)
 
 %:
 	@:
 
 test-repos:
 	@echo "Testing repository connections..."
-	npx ts-node src/scripts/setup-repos.ts test
+	npx ts-node src/gas.ts test-repos
 
 # Project management commands
 clone:
