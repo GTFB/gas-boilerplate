@@ -202,6 +202,17 @@ class GAS {
     }
   }
 
+  files(projectName: string): void {
+    try {
+      const { FileExtractor } = require('./functions/extract-files');
+      const extractor = new FileExtractor(projectName);
+      extractor.extractFiles();
+    } catch (error) {
+      console.error(`❌ Failed to extract files: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw error;
+    }
+  }
+
   // Repository management
   async setupRepos(repoUrl?: string): Promise<void> {
     if (!this.isGitRepository()) {
@@ -433,6 +444,11 @@ async function main(): Promise<void> {
         gas.logs();
         break;
         
+      case 'files':
+        if (!projectName) throw new Error('Project name required: gas files projectname');
+        gas.files(projectName);
+        break;
+        
       case 'setup-repos':
         await gas.setupRepos(projectName);
         break;
@@ -463,6 +479,7 @@ async function main(): Promise<void> {
         console.log('  clone name        - clone project');
         console.log('  pull name         - download changes');
         console.log('  push name         - upload changes');
+        console.log('  files name        - extract files from files.html');
         console.log('  projects          - show all configured projects');
         console.log('  list              - list projects and show configuration');
         console.log('');

@@ -21,10 +21,15 @@ help:
 	@echo ""
 	@echo "Project management commands:"
 	@echo "  make clone name             - clone project"
+	@echo "  make clone-name             - clone project (alternative syntax)"
 	@echo "  make pull name              - download changes"
+	@echo "  make pull-name              - download changes (alternative syntax)"
 	@echo "  make push name              - upload changes"
+	@echo "  make push-name              - upload changes (alternative syntax)"
 	@echo "  make status name            - show status"
+	@echo "  make status-name            - show status (alternative syntax)"
 	@echo "  make files name             - extract files from files.html"
+	@echo "  make files-name             - extract files (alternative syntax)"
 	@echo "  make new name               - create new project (with templates)"
 	@echo "  make list                   - list projects"
 	@echo "  make projects               - show all configured projects"
@@ -85,84 +90,66 @@ test-repos:
 
 # Project management commands
 clone:
-	@if "$(name)"=="" ( \
-		echo "ERROR: Specify project name: make clone projectname" && \
-		echo "Example: make clone myproject" && \
-		exit /b 1 \
-	)
 	@echo "Cloning project: $(name)"
 	@if exist "..\$(name)" ( \
 		echo "ERROR: Project $(name) already exists!" && \
 		exit /b 1 \
 	)
 	@echo "Creating project structure and adding to configuration..."
-	npx ts-node src/clasp-clone.ts clone $(name)
+	npx ts-node src/gas.ts clone $(name)
+
+clone-%:
+	@echo "Cloning project: $*"
+	@if exist "..\$*" ( \
+		echo "ERROR: Project $* already exists!" && \
+		exit /b 1 \
+	)
+	@echo "Creating project structure and adding to configuration..."
+	npx ts-node src/gas.ts clone $*
 
 pull:
-	@if "$(name)"=="" ( \
-		echo "ERROR: Specify project name: make pull projectname" && \
-		echo "Example: make pull myproject" && \
-		exit /b 1 \
-	)
 	@echo "Downloading changes for project: $(name)"
-	npx ts-node src/clasp-clone.ts pull $(name)
+	npx ts-node src/gas.ts pull $(name)
+
+pull-%:
+	@echo "Downloading changes for project: $*"
+	npx ts-node src/gas.ts pull $*
 
 push:
-	@if "$(name)"=="" ( \
-		echo "ERROR: Specify project name: make push projectname" && \
-		echo "Example: make push myproject" && \
-		exit /b 1 \
-	)
 	@echo "Uploading changes for project: $(name)"
-	npx ts-node src/clasp-clone.ts push $(name)
+	npx ts-node src/gas.ts push $(name)
+
+push-%:
+	@echo "Uploading changes for project: $*"
+	npx ts-node src/gas.ts push $*
 
 status:
-	@if "$(name)"=="" ( \
-		echo "ERROR: Specify project name: make status projectname" && \
-		echo "Example: make status myproject" && \
-		exit /b 1 \
-	)
 	@echo "Project status for: $(name)"
-	npx ts-node src/clasp-clone.ts list $(name)
+	npx ts-node src/gas.ts list
+
+status-%:
+	@echo "Project status for: $*"
+	npx ts-node src/gas.ts list
 
 files:
-	@if "$(name)"=="" ( \
-		echo "ERROR: Specify project name: make files projectname" && \
-		echo "Example: make files myproject" && \
-		exit /b 1 \
-	)
 	@echo "Extracting files from project: $(name)"
-	npx ts-node src/functions/extract-files.ts $(name)
+	npx ts-node src/gas.ts files $(name)
+
+files-%:
+	@echo "Extracting files from project: $*"
+	npx ts-node src/gas.ts files $*
 
 new:
-	@if "$(name)"=="" ( \
-		echo "ERROR: Specify project name: make new projectname" && \
-		echo "Example: make new analytics" && \
-		exit /b 1 \
-	)
 	@echo "Creating new project: $(name)"
-	@if exist "..\$(name)" ( \
-		echo "ERROR: Project $(name) already exists!" && \
-		exit /b 1 \
-	)
+	@node -e "const fs = require('fs'); const path = require('path'); const projectPath = path.resolve('../$(name)'); if (fs.existsSync(projectPath)) { console.log('ERROR: Project $(name) already exists!'); process.exit(1); }"
+	@echo "Creating new project: $(name)"
+	@node -e "const fs = require('fs'); const path = require('path'); const projectPath = path.resolve('../$(name)'); if (fs.existsSync(projectPath)) { console.log('ERROR: Project $(name) already exists!'); process.exit(1); }"
 	@echo "Creating folder structure..."
-	@if not exist "..\$(name)" mkdir "..\$(name)"
-	@if not exist "..\$(name)\system" mkdir "..\$(name)\system"
-	@if not exist "..\$(name)\files" mkdir "..\$(name)\files"
+	@node -e "const fs = require('fs'); const path = require('path'); const projectPath = path.resolve('../$(name)'); fs.mkdirSync(projectPath, { recursive: true }); fs.mkdirSync(path.join(projectPath, 'system'), { recursive: true }); fs.mkdirSync(path.join(projectPath, 'files'), { recursive: true });"
 	@echo "Copying service account..."
-	@if exist "key.json" ( \
-		copy "key.json" "..\$(name)\system\" && \
-		echo "✅ Service account copied" \
-	) else ( \
-		echo "⚠️  key.json not found (copy manually if needed)" \
-	)
+	@node -e "const fs = require('fs'); const path = require('path'); const keyPath = path.resolve('key.json'); const targetPath = path.resolve('../$(name)/system/key.json'); if (fs.existsSync(keyPath)) { fs.copyFileSync(keyPath, targetPath); console.log('✅ Service account copied'); } else { console.log('⚠️  key.json not found (copy manually if needed)'); }"
 	@echo "Copying project templates..."
-	@if exist "templates\appsscript.json" ( \
-		copy "templates\appsscript.json" "..\$(name)\system\" && \
-		echo "✅ Project template copied" \
-	) else ( \
-		echo "⚠️  appsscript.json template not found (copy manually if needed)" \
-	)
+	@node -e "const fs = require('fs'); const path = require('path'); const templatePath = path.resolve('templates/appsscript.json'); const targetPath = path.resolve('../$(name)/system/appsscript.json'); if (fs.existsSync(templatePath)) { fs.copyFileSync(templatePath, targetPath); console.log('✅ Project template copied'); } else { console.log('⚠️  appsscript.json template not found (copy manually if needed)'); }"
 	@echo "SUCCESS: Project $(name) created!"
 	@echo ""
 	@echo "Project structure:"
@@ -190,39 +177,30 @@ new:
 
 list:
 	@echo "Project list:"
-	@for /d %%d in (..\*) do ( \
-		if not "%%d"=="..\system" ( \
-			echo   %%~nxd \
-		) \
-	)
+	@node -e "const fs = require('fs'); const path = require('path'); const projectsPath = path.resolve('../'); const dirs = fs.readdirSync(projectsPath, { withFileTypes: true }).filter(dirent => dirent.isDirectory()).map(dirent => dirent.name).filter(name => name !== 'system' && name !== 'gas-boilerplate'); if (dirs.length === 0) { console.log('  No projects found'); } else { dirs.forEach(dir => console.log('  ' + dir)); }"
 	@echo ""
-	@echo "To clone: make clone PROJECT=name"
+	@echo "To clone: make clone projectname"
 
 projects:
 	@echo "Showing all configured projects:"
-	npx ts-node src/clasp-clone.ts projects
+	npx ts-node src/gas.ts projects
 
 # System commands
 update:
 	@echo "Checking for updates from gas-boilerplate..."
-	npx ts-node src/utils/version-updater.ts check
+	npx ts-node src/gas.ts check
 
 upgrade:
 	@echo "Updating system..."
-	npx ts-node src/utils/version-updater.ts update
+	npx ts-node src/gas.ts upgrade
 
 validate:
 	@echo "Validating system configuration..."
-	npx ts-node src/utils/config-validator.ts
+	npx ts-node src/gas.ts validate
 
 logs:
 	@echo "Showing recent logs..."
-	@for /f "tokens=1-3 delims=/" %%a in ('date /t') do set today=%%a
-	@if exist "logs\%%today%%.md" ( \
-		type "logs\%%today%%.md" \
-	) else ( \
-		echo "No logs found for today" \
-	)
+	npx ts-node src/gas.ts logs
 
 config:
 	@echo "System configuration:"

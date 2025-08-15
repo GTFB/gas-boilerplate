@@ -1,27 +1,7 @@
 {
-  "myproject": {
-    "id": "SCRIPT_ID_HERE",
-    "title": "My Project",
-    "description": "Project description"
-  },
-  "analytics": {
-    "id": "",
-    "title": "Analytics",
-    "description": "Analytics system"
-  },
-  "orders": {
-    "id": "",
-    "title": "Orders", 
-    "description": "Order management system"
-  },
-  "dashboard": {
-    "id": "",
-    "title": "Dashboard",
-    "description": "Dashboard application"
-  },
-  "leads": {
-    "id": "",
-    "title": "Leads",
-    "description": "Lead management system"
+  "example": {
+    "id": "your-script-id-here",
+    "title": "Example Project",
+    "description": "Example project for testing"
   }
 }
