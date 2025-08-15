@@ -1,17 +1,37 @@
 # Changelog
 
-## [1.3.16] - 2025-01-27
+## [1.3.19] - 2025-01-27
 
-### 🐛 Bug Fixes
-- Fixed `make new` command not accepting project names properly
-- Added support for both `$(name)` and `$(PROJECT)` variables in Makefile
-- Fixed "Project name required" error when running `make new projectname`
-- Improved error messages for missing project names
+### 🔧 Release System Improvements
+- **Fixed version bumping**: `make release` now updates versions in 3 places instead of 2
+- **Added CHANGELOG.md support**: Version is now automatically updated in CHANGELOG.md
+- **Enhanced create-release.ts**: Added `updateChangelogVersion` method for complete version synchronization
+- **Better logging**: Added confirmation messages for all version updates
+
+### 📝 Version Update Locations
+Now `make release` updates versions in:
+1. ✅ `package.json` - Node.js package version
+2. ✅ `README.md` - Version badge in documentation
+3. ✅ `CHANGELOG.md` - Version header in changelog
+
+---
+
+## [1.3.17] - 2025-01-27
+
+### ✨ New Features
+- **Direct project name support**: `make new projectname` now works without `name=` or `PROJECT=`
+- **Pattern-based commands**: Added `new-%` rule for direct project creation
+- **Simplified syntax**: Users can now run `make new leads` instead of `make new name=leads`
 
 ### 🔧 Makefile Improvements
-- Updated all project management commands to support both variable formats
-- Added proper validation for project names in `new`, `clone`, `pull`, `push`, `status`, and `files` commands
-- Fixed Node.js script execution in Windows environment
+- Replaced complex variable logic with simple pattern matching
+- Updated help messages to show new direct syntax
+- Added examples for all project management commands
+- Improved error messages and user guidance
+
+---
+
+## [1.3.16] - 2025-01-27
 
 ---
 

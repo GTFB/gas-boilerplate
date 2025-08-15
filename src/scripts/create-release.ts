@@ -84,6 +84,9 @@ class ReleaseCreator {
     // Update version in README.md
     await this.updateReadmeVersion(currentVersion, newVersion);
     
+    // Update version in CHANGELOG.md
+    await this.updateChangelogVersion(currentVersion, newVersion);
+    
     console.log(`📈 Version bumped: ${currentVersion} → ${newVersion}`);
     return newVersion;
   }
@@ -103,6 +106,29 @@ class ReleaseCreator {
       }
     } catch (error) {
       console.log(`⚠️  Could not update README.md: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  private async updateChangelogVersion(oldVersion: string, newVersion: string): Promise<void> {
+    try {
+      const changelogPath = path.resolve(process.cwd(), 'CHANGELOG.md');
+      if (fs.existsSync(changelogPath)) {
+        let changelogContent = fs.readFileSync(changelogPath, 'utf8');
+        
+        // Update version in CHANGELOG.md header
+        const versionHeaderRegex = /^## \[([\d.]+)\] - /gm;
+        changelogContent = changelogContent.replace(versionHeaderRegex, (match, version) => {
+          if (version === oldVersion) {
+            return `## [${newVersion}] - `;
+          }
+          return match;
+        });
+        
+        fs.writeFileSync(changelogPath, changelogContent);
+        console.log(`📝 Version updated in CHANGELOG.md: ${oldVersion} → ${newVersion}`);
+      }
+    } catch (error) {
+      console.log(`⚠️  Could not update CHANGELOG.md: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
