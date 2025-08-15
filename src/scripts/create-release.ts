@@ -13,14 +13,30 @@ class ReleaseCreator {
     
     try {
       await this.commitChanges(version);
-      this.createTag(version);
+      
+      // Ask user if they want to create a tag
+      const shouldCreateTag = await this.askForTagCreation(version);
+      if (shouldCreateTag) {
+        await this.createTagWithDescription(version);
+      } else {
+        console.log('⏭️  Skipping tag creation');
+      }
+      
       this.pushChanges();
       
       console.log(`\n✅ Release v${version} created successfully!`);
       console.log(`\n📋 Next steps:`);
       console.log(`  1. Review the changes: git log --oneline -5`);
-      console.log(`  2. Push tags: git push --tags`);
-      console.log(`  3. Create GitHub release if needed`);
+      if (shouldCreateTag) {
+        console.log(`  2. Push tags: git push --tags`);
+        console.log(`  3. Create GitHub release if needed`);
+        console.log(`\n💡 Tag created with description from CHANGELOG.md`);
+        console.log(`   View tag: git show v${version}`);
+      } else {
+        console.log(`  2. Create tag manually if needed: git tag -a v${version} -m "Release v${version}"`);
+        console.log(`  3. Push tags: git push --tags`);
+        console.log(`  4. Create GitHub release if needed`);
+      }
       
     } catch (error) {
       console.error('❌ Release creation failed:', error instanceof Error ? error.message : 'Unknown error');
@@ -132,6 +148,80 @@ class ReleaseCreator {
     }
   }
 
+  private async askForTagCreation(version: string): Promise<boolean> {
+    const readline = require('readline');
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+    
+    return new Promise<boolean>((resolve) => {
+      rl.question(`\n🏷️  Create git tag for v${version}? (y/N, default: N): `, (answer: string) => {
+        rl.close();
+        const choice = answer.trim().toLowerCase();
+        resolve(choice === 'y' || choice === 'yes');
+      });
+    });
+  }
+
+  private async createTagWithDescription(version: string): Promise<void> {
+    try {
+      // Get description from CHANGELOG.md
+      const tagMessage = await this.getTagMessageFromChangelog(version);
+      
+      execSync(`git tag -a v${version} -m "${tagMessage}"`, { stdio: 'inherit' });
+      console.log('✅ Tag created with description from CHANGELOG.md');
+    } catch (error) {
+      throw new Error('Failed to create tag');
+    }
+  }
+
+  private async getTagMessageFromChangelog(version: string): Promise<string> {
+    try {
+      const changelogPath = path.resolve(process.cwd(), 'CHANGELOG.md');
+      if (fs.existsSync(changelogPath)) {
+        const changelogContent = fs.readFileSync(changelogPath, 'utf8');
+        
+        // Find the section for this version
+        const versionSectionRegex = new RegExp(`## \\[${version}\\] - [^\\n]+\\n([\\s\\S]*?)(?=## \\[|$)`, 'g');
+        const match = versionSectionRegex.exec(changelogContent);
+        
+        if (match && match[1]) {
+          // Extract the content and clean it up
+          let content = match[1].trim();
+          
+          // Remove markdown formatting and clean up
+          content = content
+            .replace(/^###\s+/gm, '') // Remove ### headers
+            .replace(/^\*\*\s+/gm, '• ') // Replace ** with •
+            .replace(/^\s*-\s+/gm, '• ') // Replace - with •
+            .replace(/^\s*✅\s+/gm, '• ') // Replace ✅ with •
+            .replace(/^\s*🔧\s+/gm, '• ') // Replace 🔧 with •
+            .replace(/^\s*📚\s+/gm, '• ') // Replace 📚 with •
+            .replace(/^\s*🐛\s+/gm, '• ') // Replace 🐛 with •
+            .replace(/^\s*✨\s+/gm, '• ') // Replace ✨ with •
+            .replace(/^\s*📁\s+/gm, '• ') // Replace 📁 with •
+            .replace(/^\s*📝\s+/gm, '• ') // Replace 📝 with •
+            .replace(/\n\s*\n/g, '\n') // Remove extra blank lines
+            .trim();
+          
+          // Limit length to avoid git tag message issues
+          if (content.length > 500) {
+            content = content.substring(0, 500) + '...';
+          }
+          
+          return `Release v${version}\n\n${content}`;
+        }
+      }
+      
+      // Fallback to simple message
+      return `Release v${version}`;
+    } catch (error) {
+      console.log(`⚠️  Could not read CHANGELOG.md, using default tag message`);
+      return `Release v${version}`;
+    }
+  }
+
   private async commitChanges(version: string): Promise<void> {
     try {
       const readline = require('readline');
@@ -156,14 +246,7 @@ class ReleaseCreator {
     }
   }
 
-  private createTag(version: string): void {
-    try {
-      execSync(`git tag -a v${version} -m "Release v${version}"`, { stdio: 'inherit' });
-      console.log('✅ Tag created');
-    } catch (error) {
-      throw new Error('Failed to create tag');
-    }
-  }
+
 
   private pushChanges(): void {
     try {

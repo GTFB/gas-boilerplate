@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.4.0] - 2025-01-27
+
+### 🏷️ Enhanced Tag Creation
+- **Interactive tag creation**: Added question "Create git tag? (y/N)" with default "No"
+- **Smart tag descriptions**: Automatically extracts release description from CHANGELOG.md
+- **Rich tag messages**: Tags now include detailed changelog content instead of just "Release vX.X.X"
+- **Formatting cleanup**: Automatically converts markdown formatting to clean text for git tags
+- **Fallback support**: Falls back to simple message if CHANGELOG.md cannot be read
+
+### 🔧 Release Process Improvements
+- **User choice**: Users can now choose whether to create tags or skip them
+- **Better guidance**: Updated next steps based on user's tag creation choice
+- **Content extraction**: Intelligent parsing of CHANGELOG.md sections for tag descriptions
+- **Length limits**: Automatically truncates long descriptions to avoid git tag issues
+
+### 📝 Tag Message Format
+Tags now include:
+- Release version header
+- Cleaned changelog content
+- Bullet points for features/fixes
+- Automatic emoji cleanup
+- Smart content truncation
+
+---
+
 ## [1.3.19] - 2025-01-27
 
 ### 🔧 Release System Improvements
