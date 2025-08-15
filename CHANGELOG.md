@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.4.4] - 2025-08-15
+
+### 🐛 Critical Bug Fixes
+- **Fixed double version bumping**: Now checks CHANGELOG.md for existing higher versions
+- **Fixed missing GitHub tags**: Tags are now automatically pushed to remote repository
+- **Smart version synchronization**: Prevents version conflicts between package.json and CHANGELOG.md
+
+### 🔧 Version Management Improvements
+- **Intelligent version checking**: Compares versions between package.json and CHANGELOG.md
+- **Automatic tag pushing**: `git push --tags` is now executed automatically
+- **Version conflict prevention**: Uses existing version from CHANGELOG.md if it's higher
+- **Better user guidance**: Updated next steps to reflect automatic tag pushing
+
+### 📝 Technical Enhancements
+- **Added `getLatestVersionFromChangelog()`**: Extracts latest version from CHANGELOG.md
+- **Added `isVersionHigher()`**: Compares semantic versions correctly
+- **Added `pushTags()`**: Automatically pushes tags to remote repository
+- **Enhanced logging**: Better visibility into version synchronization process
+
+---
+
 ## [1.4.2] - 2025-08-15
 
 ### 🐛 Bug Fixes

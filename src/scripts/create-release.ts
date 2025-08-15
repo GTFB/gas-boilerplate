@@ -24,11 +24,16 @@ class ReleaseCreator {
       
       this.pushChanges();
       
+      // Push tags if they were created
+      if (shouldCreateTag) {
+        this.pushTags();
+      }
+      
       console.log(`\n✅ Release v${version} created successfully!`);
       console.log(`\n📋 Next steps:`);
       console.log(`  1. Review the changes: git log --oneline -5`);
       if (shouldCreateTag) {
-        console.log(`  2. Push tags: git push --tags`);
+        console.log(`  2. Tags already pushed to remote`);
         console.log(`  3. Create GitHub release if needed`);
         console.log(`\n💡 Tag created with description from CHANGELOG.md`);
         console.log(`   View tag: git show v${version}`);
@@ -77,6 +82,26 @@ class ReleaseCreator {
     const packageJson = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
     
     const currentVersion = packageJson.version;
+    
+    // Check if CHANGELOG.md already has a higher version
+    const changelogVersion = await this.getLatestVersionFromChangelog();
+    
+    if (changelogVersion && this.isVersionHigher(changelogVersion, currentVersion)) {
+      console.log(`📋 Found higher version in CHANGELOG.md: ${changelogVersion}`);
+      console.log(`📝 Using existing version from CHANGELOG.md instead of bumping`);
+      
+      // Use the version from CHANGELOG.md
+      packageJson.version = changelogVersion;
+      fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2));
+      
+      // Update version in README.md
+      await this.updateReadmeVersion(currentVersion, changelogVersion);
+      
+      console.log(`📈 Version synchronized: ${currentVersion} → ${changelogVersion}`);
+      return changelogVersion;
+    }
+    
+    // Normal version bumping
     const [major, minor, patch] = currentVersion.split('.').map(Number);
     
     let newVersion: string;
@@ -133,6 +158,44 @@ class ReleaseCreator {
     const dateString = `${year}-${month}-${day}`;
     console.log(`📅 Current date: ${dateString}`);
     return dateString;
+  }
+
+  private async getLatestVersionFromChangelog(): Promise<string | null> {
+    try {
+      const changelogPath = path.resolve(process.cwd(), 'CHANGELOG.md');
+      if (fs.existsSync(changelogPath)) {
+        const changelogContent = fs.readFileSync(changelogPath, 'utf8');
+        
+        // Find the latest version from CHANGELOG.md
+        const versionHeaderRegex = /^## \[([\d.]+)\] - /gm;
+        const matches = Array.from(changelogContent.matchAll(versionHeaderRegex));
+        
+        if (matches.length > 0) {
+          const latestVersion = matches[0][1];
+          console.log(`🔍 Latest version in CHANGELOG.md: ${latestVersion}`);
+          return latestVersion;
+        }
+      }
+      return null;
+    } catch (error) {
+      console.log(`⚠️  Could not read CHANGELOG.md: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      return null;
+    }
+  }
+
+  private isVersionHigher(version1: string, version2: string): boolean {
+    const v1Parts = version1.split('.').map(Number);
+    const v2Parts = version2.split('.').map(Number);
+    
+    for (let i = 0; i < Math.max(v1Parts.length, v2Parts.length); i++) {
+      const v1Part = v1Parts[i] || 0;
+      const v2Part = v2Parts[i] || 0;
+      
+      if (v1Part > v2Part) return true;
+      if (v1Part < v2Part) return false;
+    }
+    
+    return false; // Versions are equal
   }
 
   private async updateChangelogVersion(oldVersion: string, newVersion: string): Promise<void> {
@@ -289,6 +352,15 @@ class ReleaseCreator {
       console.log('✅ Changes pushed');
     } catch (error) {
       console.log('⚠️  Could not push changes (remote may not be configured)');
+    }
+  }
+
+  private pushTags(): void {
+    try {
+      execSync('git push --tags', { stdio: 'inherit' });
+      console.log('✅ Tags pushed to remote');
+    } catch (error) {
+      console.log('⚠️  Could not push tags (remote may not be configured)');
     }
   }
 }

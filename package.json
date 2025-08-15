@@ -1,6 +1,6 @@
 {
   "name": "gas-boilerplate",
-  "version": "1.4.2",
+  "version": "1.4.4",
   "description": "Google Apps Script development environment",
   "main": "src/gas.ts",
   "scripts": {
